@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Blog | Trare Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#030a0f;--surface:#071318;--surface2:#0c1e27;--green:#00ff88;--cyan:#00d4ff;--red:#ff2d55;--orange:#ff9500;--text:#c8dde6;--text-dim:#4a6a7a;--border:#0f2d3a;--mono:'Share Tech Mono',monospace;--display:'Rajdhani',sans-serif;--body:'Inter',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-weight:300;overflow-x:hidden}
+#node-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;background:rgba(3,10,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--display);font-weight:700;font-size:1.5rem;letter-spacing:.1em;color:#fff;text-decoration:none}.nav-logo span{color:var(--green)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-family:var(--mono);font-size:.72rem;letter-spacing:.15em;color:var(--text-dim);text-decoration:none;text-transform:uppercase;transition:color .2s;padding:.25rem 0;border-bottom:1px solid transparent}
+.nav-links a:hover,.nav-links a.active{color:var(--green);border-bottom-color:var(--green)}
+.nav-cta{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid var(--green);padding:.5rem 1.2rem;text-decoration:none;transition:background .2s,color .2s}.nav-cta:hover{background:var(--green);color:#000}
+.page-hero{position:relative;z-index:1;padding:10rem 4rem 5rem;border-bottom:1px solid var(--border);background:rgba(7,19,24,.5)}
+.page-hero-inner{max-width:1200px;margin:0 auto}
+.breadcrumb{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:1.5rem}
+.breadcrumb a{color:var(--text-dim);text-decoration:none}.breadcrumb a:hover{color:var(--green)}.breadcrumb span{color:var(--green);margin:0 .5rem}
+.page-title{font-family:var(--display);font-size:clamp(2.5rem,6vw,5rem);font-weight:700;color:#fff;line-height:1;margin-bottom:.5rem}.page-title .accent{color:var(--green)}
+.page-subtitle{font-family:var(--mono);font-size:.9rem;color:var(--cyan);letter-spacing:.08em;margin-bottom:1.5rem}
+.page-desc{font-size:1rem;color:var(--text-dim);max-width:600px;line-height:1.75}
+section{position:relative;z-index:1}
+.section-inner{max-width:1200px;margin:0 auto;padding:6rem 4rem}
+/* BLOG FILTERS */
+.blog-filters{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+.filter-btn{font-family:var(--mono);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;padding:.4rem 1rem;border:1px solid var(--border);background:transparent;color:var(--text-dim);cursor:pointer;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{border-color:var(--green);color:var(--green);background:rgba(0,255,136,.05)}
+/* BLOG GRID */
+.blog-layout{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5px;background:var(--border)}
+.blog-card{background:var(--surface);display:flex;flex-direction:column;overflow:hidden;transition:background .3s;cursor:pointer}
+.blog-card:hover{background:var(--surface2)}
+.blog-card.featured{grid-column:span 2;grid-row:span 2}
+.blog-thumb{width:100%;aspect-ratio:16/9;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden}
+.blog-card.featured .blog-thumb{aspect-ratio:16/7}
+.blog-thumb::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,255,136,.07),transparent 70%)}
+.blog-body{padding:1.8rem;flex:1;display:flex;flex-direction:column}
+.blog-meta{display:flex;align-items:center;gap:1rem;margin-bottom:.8rem}
+.blog-cat{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;padding:.2rem .6rem;border:1px solid}
+.blog-cat.security{color:var(--green);border-color:rgba(0,255,136,.3)}
+.blog-cat.tech{color:var(--cyan);border-color:rgba(0,212,255,.3)}
+.blog-cat.company{color:var(--orange);border-color:rgba(255,149,0,.3)}
+.blog-date{font-family:var(--mono);font-size:.62rem;color:var(--text-dim)}
+.blog-title{font-family:var(--display);font-size:1.2rem;font-weight:700;color:#fff;line-height:1.25;margin-bottom:.75rem}
+.blog-card.featured .blog-title{font-size:1.8rem}
+.blog-excerpt{font-size:.85rem;color:var(--text-dim);line-height:1.7;margin-bottom:1.5rem;flex:1}
+.blog-footer{display:flex;align-items:center;justify-content:space-between;padding-top:1rem;border-top:1px solid var(--border);margin-top:auto}
+.blog-author{font-family:var(--mono);font-size:.65rem;color:var(--text-dim)}
+.blog-read{font-family:var(--mono);font-size:.65rem;color:var(--green);letter-spacing:.1em}
+/* NEWSLETTER */
+.newsletter{position:relative;z-index:1;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.nl-inner{max-width:700px;margin:0 auto;padding:5rem 4rem;text-align:center}
+.nl-inner h2{font-family:var(--display);font-size:2rem;font-weight:700;color:#fff;margin-bottom:.75rem}
+.nl-inner h2 span{color:var(--green)}
+.nl-inner p{font-size:.9rem;color:var(--text-dim);margin-bottom:2rem;line-height:1.7}
+.nl-form{display:flex;gap:0;max-width:480px;margin:0 auto}
+.nl-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-right:none;color:var(--text);padding:.85rem 1.2rem;font-family:var(--body);font-size:.88rem;outline:none;transition:border-color .2s}
+.nl-input:focus{border-color:var(--green)}
+.nl-btn{font-family:var(--display);font-weight:700;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;background:var(--green);color:#000;padding:.85rem 1.5rem;border:none;cursor:pointer;transition:box-shadow .2s;white-space:nowrap}
+.nl-btn:hover{box-shadow:0 0 20px rgba(0,255,136,.4)}
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);background:var(--surface);padding:3rem 4rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-logo{font-family:var(--display);font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:.5rem}.footer-logo span{color:var(--green)}
+.footer-slogan{font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;color:var(--green);margin-bottom:1rem}
+.footer-brand-col p{font-size:.83rem;color:var(--text-dim);line-height:1.7}
+.footer-col h4{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;color:var(--green);text-transform:uppercase;margin-bottom:1rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.footer-col ul a{font-size:.85rem;color:var(--text-dim);text-decoration:none;transition:color .2s}.footer-col ul a:hover{color:var(--green)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-copy{font-family:var(--mono);font-size:.65rem;color:var(--text-dim);letter-spacing:.08em}
+.footer-legal{display:flex;gap:1.5rem}
+.footer-legal a{font-family:var(--mono);font-size:.65rem;color:var(--text-dim);text-decoration:none;transition:color .2s}.footer-legal a:hover{color:var(--green)}
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}.fade-up.visible{opacity:1;transform:translateY(0)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.page-hero-inner{animation:fadeUp .7s .1s ease both}
+@media(max-width:1000px){nav{padding:1rem 1.5rem}.nav-links{display:none}.section-inner{padding:4rem 1.5rem}.page-hero{padding:8rem 1.5rem 3rem}.blog-layout{grid-template-columns:1fr 1fr}.blog-card.featured{grid-column:span 2}.footer-grid{grid-template-columns:1fr 1fr}footer{padding:2rem 1.5rem}.nl-inner{padding:3rem 1.5rem}}
+@media(max-width:600px){.blog-layout{grid-template-columns:1fr}.blog-card.featured{grid-column:span 1;grid-row:span 1}.nl-form{flex-direction:column}.footer-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<canvas id="node-canvas"></canvas>
+<nav>
+  <a class="nav-logo" href="index.html">TRARE<span>.</span>TECH</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="contact.html">Get Secured</a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span>Blog</div>
+    <h1 class="page-title">Cyber <span class="accent">Insights</span></h1>
+    <div class="page-subtitle">// Security Intelligence from the Trare Team</div>
+    <p class="page-desc">Stay ahead of threats with expert analysis, industry news, and practical cybersecurity guides written by our team of specialists.</p>
+  </div>
+</div>
+
+<section>
+  <div class="section-inner">
+    <!-- FILTERS -->
+    <div class="blog-filters fade-up">
+      <button class="filter-btn active">All Posts</button>
+      <button class="filter-btn">Cybersecurity</button>
+      <button class="filter-btn">Tech Tips</button>
+      <button class="filter-btn">Company News</button>
+      <button class="filter-btn">Tutorials</button>
+    </div>
+
+    <!-- BLOG GRID -->
+    <div class="blog-layout fade-up">
+      <!-- Featured -->
+      <div class="blog-card featured">
+        <div class="blog-thumb" style="font-size:5rem">🛡️</div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="blog-cat security">Cybersecurity</span>
+            <span class="blog-date">15 Jan 2024</span>
+          </div>
+          <div class="blog-title">The Rising Tide of Cyber Threats in Sub-Saharan Africa: What Businesses Need to Know in 2024</div>
+          <div class="blog-excerpt">As digital adoption accelerates across Sub-Saharan Africa, cybercriminals are increasingly targeting the region's businesses with sophisticated attacks. From ransomware campaigns targeting financial institutions to phishing attacks on SMEs, the threat landscape is evolving rapidly. Here's what every Zambian business leader needs to know to stay protected.</div>
+          <div class="blog-footer">
+            <span class="blog-author">By Trare Security Team</span>
+            <span class="blog-read">8 MIN READ →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post 2 -->
+      <div class="blog-card">
+        <div class="blog-thumb">🔍</div>
+        <div class="blog-body">
+          <div class="blog-meta"><span class="blog-cat security">Cybersecurity</span><span class="blog-date">08 Jan 2024</span></div>
+          <div class="blog-title">Why Every Business Needs a Penetration Test in 2024</div>
+          <div class="blog-excerpt">Waiting for a breach to discover vulnerabilities is no longer an option. Penetration testing has become essential for any organization serious about security.</div>
+          <div class="blog-footer"><span class="blog-author">By Trare Security Team</span><span class="blog-read">5 MIN READ →</span></div>
+        </div>
+      </div>
+
+      <!-- Post 3 -->
+      <div class="blog-card">
+        <div class="blog-thumb">🌐</div>
+        <div class="blog-body">
+          <div class="blog-meta"><span class="blog-cat tech">Tech Tips</span><span class="blog-date">02 Jan 2024</span></div>
+          <div class="blog-title">5 Signs Your Business Website Has Been Compromised</div>
+          <div class="blog-excerpt">Website hacks are often silent. Learn the telltale signs that your site may have been breached and what to do immediately.</div>
+          <div class="blog-footer"><span class="blog-author">By Trare Dev Team</span><span class="blog-read">4 MIN READ →</span></div>
+        </div>
+      </div>
+
+      <!-- Post 4 -->
+      <div class="blog-card">
+        <div class="blog-thumb">📡</div>
+        <div class="blog-body">
+          <div class="blog-meta"><span class="blog-cat tech">Tech Tips</span><span class="blog-date">22 Dec 2023</span></div>
+          <div class="blog-title">Securing Your Business Network: A Practical Guide for SMEs</div>
+          <div class="blog-excerpt">Small and medium businesses are the #1 target for cyberattacks. This practical guide walks you through affordable, effective network security measures.</div>
+          <div class="blog-footer"><span class="blog-author">By Trare IT Team</span><span class="blog-read">6 MIN READ →</span></div>
+        </div>
+      </div>
+
+      <!-- Post 5 -->
+      <div class="blog-card">
+        <div class="blog-thumb">💻</div>
+        <div class="blog-body">
+          <div class="blog-meta"><span class="blog-cat tech">Tech Tips</span><span class="blog-date">14 Dec 2023</span></div>
+          <div class="blog-title">Understanding Ransomware: How It Works and How to Prevent It</div>
+          <div class="blog-excerpt">Ransomware attacks have surged globally. Understanding how they work is the first step to preventing them from crippling your business.</div>
+          <div class="blog-footer"><span class="blog-author">By Trare Security Team</span><span class="blog-read">7 MIN READ →</span></div>
+        </div>
+      </div>
+
+      <!-- Post 6 -->
+      <div class="blog-card">
+        <div class="blog-thumb">🏢</div>
+        <div class="blog-body">
+          <div class="blog-meta"><span class="blog-cat company">Company News</span><span class="blog-date">01 Dec 2023</span></div>
+          <div class="blog-title">Trare Technologies Expands Cybersecurity Services for Lusaka's Growing Tech Sector</div>
+          <div class="blog-excerpt">We're proud to announce the expansion of our SOC capabilities and introduction of 24/7 threat monitoring for Zambian businesses.</div>
+          <div class="blog-footer"><span class="blog-author">By Trare Technologies</span><span class="blog-read">3 MIN READ →</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <div class="nl-inner">
+    <h2>Stay Ahead of <span>Cyber Threats</span></h2>
+    <p>Subscribe to the Trare Intelligence Brief — monthly cybersecurity insights, threat alerts, and practical tips delivered to your inbox.</p>
+    <div class="nl-form">
+      <input class="nl-input" type="email" placeholder="Enter your email address..."/>
+      <button class="nl-btn">Subscribe →</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand-col"><div class="footer-logo">TRARE<span>.</span>TECHNOLOGIES</div><div class="footer-slogan">// Quest for Zero Defeat</div><p>Zambia's premier IT and Cybersecurity company, delivering digital defense and software solutions since 2019.</p></div>
+    <div class="footer-col"><h4>Pages</h4><ul><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Services</h4><ul><li><a href="services.html">Cybersecurity</a></li><li><a href="services.html">Pen Testing</a></li><li><a href="services.html">Web Design</a></li><li><a href="services.html">Networking</a></li><li><a href="services.html">Software</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+2600776514220">+260 0776 514 220</a></li><li><a href="contact.html">Send Message</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2024 Trare Technologies · Lusaka, Zambia · PACRA Registered</div>
+    <div class="footer-legal"><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms & Conditions</a></div>
+  </div>
+</footer>
+<script>
+document.querySelectorAll('.filter-btn').forEach(btn=>{btn.addEventListener('click',function(){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')})});
+(function(){const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');let W,H,nodes=[];function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}resize();window.addEventListener('resize',resize);const COLORS=['#00ff88','#00d4ff','#00ff88','#00cc6a'];class Node{constructor(){this.init();this.y=Math.random()*H}init(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.55;this.vy=(Math.random()-.5)*.55;this.r=Math.random()*2+1;this.isThreat=Math.random()<.07;this.color=this.isThreat?'#ff2d55':COLORS[Math.floor(Math.random()*COLORS.length)];this.alpha=Math.random()*.45+.2;this.pulse=Math.random()*Math.PI*2;this.ps=.018+Math.random()*.018}update(){this.x+=this.vx;this.y+=this.vy;this.pulse+=this.ps;if(this.x<-60)this.x=W+60;if(this.x>W+60)this.x=-60;if(this.y<-60)this.y=H+60;if(this.y>H+60)this.y=-60}draw(){const a=this.alpha*(0.65+0.35*Math.sin(this.pulse));ctx.save();ctx.globalAlpha=a;ctx.strokeStyle=this.color;ctx.lineWidth=.5;ctx.beginPath();ctx.arc(this.x,this.y,this.r*2.8,0,Math.PI*2);ctx.stroke();ctx.fillStyle=this.color;ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fill();const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.r*6);g.addColorStop(0,this.color+'2a');g.addColorStop(1,'transparent');ctx.beginPath();ctx.arc(this.x,this.y,this.r*6,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.restore()}}for(let i=0;i<55;i++)nodes.push(new Node());function loop(){ctx.clearRect(0,0,W,H);for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<180){ctx.save();ctx.globalAlpha=(1-d/180)*.22;ctx.strokeStyle=(nodes[i].isThreat||nodes[j].isThreat)?'#ff2d55':'#00ff88';ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.stroke();ctx.restore()}}nodes.forEach(n=>{n.update();n.draw()});requestAnimationFrame(loop)}loop()})();
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');io.unobserve(x.target)}}),{threshold:.1});
+document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

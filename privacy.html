@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Privacy Policy | Trare Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#030a0f;--surface:#071318;--surface2:#0c1e27;--green:#00ff88;--cyan:#00d4ff;--red:#ff2d55;--text:#c8dde6;--text-dim:#4a6a7a;--border:#0f2d3a;--mono:'Share Tech Mono',monospace;--display:'Rajdhani',sans-serif;--body:'Inter',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-weight:300;overflow-x:hidden}
+#node-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;background:rgba(3,10,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--display);font-weight:700;font-size:1.5rem;letter-spacing:.1em;color:#fff;text-decoration:none}.nav-logo span{color:var(--green)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-family:var(--mono);font-size:.72rem;letter-spacing:.15em;color:var(--text-dim);text-decoration:none;text-transform:uppercase;transition:color .2s;padding:.25rem 0;border-bottom:1px solid transparent}
+.nav-links a:hover,.nav-links a.active{color:var(--green);border-bottom-color:var(--green)}
+.nav-cta{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid var(--green);padding:.5rem 1.2rem;text-decoration:none;transition:background .2s,color .2s}.nav-cta:hover{background:var(--green);color:#000}
+.page-hero{position:relative;z-index:1;padding:10rem 4rem 4rem;border-bottom:1px solid var(--border);background:rgba(7,19,24,.5)}
+.page-hero-inner{max-width:900px;margin:0 auto}
+.breadcrumb{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:1.5rem}
+.breadcrumb a{color:var(--text-dim);text-decoration:none}.breadcrumb a:hover{color:var(--green)}.breadcrumb span{color:var(--green);margin:0 .5rem}
+.page-title{font-family:var(--display);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:700;color:#fff;line-height:1;margin-bottom:.5rem}.page-title .accent{color:var(--green)}
+.page-subtitle{font-family:var(--mono);font-size:.85rem;color:var(--cyan);letter-spacing:.08em;margin-bottom:.5rem}
+.last-updated{font-family:var(--mono);font-size:.68rem;color:var(--text-dim);letter-spacing:.1em}
+/* LEGAL CONTENT */
+.legal-wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:5rem 4rem}
+.legal-toc{background:var(--surface);border:1px solid var(--border);padding:2rem;margin-bottom:4rem;position:relative}
+.legal-toc::before{content:'';position:absolute;top:-1px;left:2rem;right:2rem;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.toc-title{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;color:var(--green);text-transform:uppercase;margin-bottom:1rem}
+.toc-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.toc-list a{font-family:var(--mono);font-size:.72rem;color:var(--text-dim);text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .2s}
+.toc-list a::before{content:'§';color:var(--green);font-size:.65rem}
+.toc-list a:hover{color:var(--green)}
+.legal-section{margin-bottom:3.5rem}
+.legal-section h2{font-family:var(--display);font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem}
+.legal-section h2 .sec-num{font-family:var(--mono);font-size:.75rem;color:var(--green);letter-spacing:.15em;background:rgba(0,255,136,.1);padding:.2rem .6rem;border:1px solid rgba(0,255,136,.2)}
+.legal-section h3{font-family:var(--display);font-size:1.1rem;font-weight:600;color:var(--cyan);margin:1.5rem 0 .75rem}
+.legal-section p{font-size:.9rem;color:var(--text-dim);line-height:1.85;margin-bottom:1rem}
+.legal-section ul,.legal-section ol{padding-left:0;list-style:none;margin-bottom:1rem;display:flex;flex-direction:column;gap:.5rem}
+.legal-section ul li,.legal-section ol li{font-size:.88rem;color:var(--text-dim);line-height:1.7;padding:.5rem .75rem;border-left:2px solid var(--border);display:flex;gap:.75rem}
+.legal-section ul li::before{content:'▸';color:var(--green);font-size:.7rem;flex-shrink:0;margin-top:.2rem}
+.legal-section ol{counter-reset:legal-counter}
+.legal-section ol li{counter-increment:legal-counter;border-left-color:rgba(0,212,255,.3)}
+.legal-section ol li::before{content:counter(legal-counter)'.';color:var(--cyan);font-family:var(--mono);font-size:.7rem;flex-shrink:0;min-width:1.5rem}
+.highlight-box{background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.2);padding:1.25rem 1.5rem;margin:1.5rem 0;font-size:.88rem;color:var(--text);line-height:1.75}
+.highlight-box strong{color:var(--green)}
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);background:var(--surface);padding:3rem 4rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-logo{font-family:var(--display);font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:.5rem}.footer-logo span{color:var(--green)}
+.footer-slogan{font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;color:var(--green);margin-bottom:1rem}
+.footer-brand-col p{font-size:.83rem;color:var(--text-dim);line-height:1.7}
+.footer-col h4{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;color:var(--green);text-transform:uppercase;margin-bottom:1rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.footer-col ul a{font-size:.85rem;color:var(--text-dim);text-decoration:none;transition:color .2s}.footer-col ul a:hover{color:var(--green)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-copy{font-family:var(--mono);font-size:.65rem;color:var(--text-dim);letter-spacing:.08em}
+.footer-legal{display:flex;gap:1.5rem}
+.footer-legal a{font-family:var(--mono);font-size:.65rem;color:var(--text-dim);text-decoration:none;transition:color .2s}.footer-legal a:hover{color:var(--green)}
+@media(max-width:1000px){nav{padding:1rem 1.5rem}.nav-links{display:none}.legal-wrap{padding:3rem 1.5rem}.page-hero{padding:8rem 1.5rem 3rem}.toc-list{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}footer{padding:2rem 1.5rem}}
+@media(max-width:600px){.footer-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<canvas id="node-canvas"></canvas>
+<nav>
+  <a class="nav-logo" href="index.html">TRARE<span>.</span>TECH</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="contact.html">Get Secured</a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span>Privacy Policy</div>
+    <h1 class="page-title">Privacy <span class="accent">Policy</span></h1>
+    <div class="page-subtitle">// How We Handle Your Data</div>
+    <div class="last-updated">Last Updated: January 2024 · Effective Date: January 1, 2024</div>
+  </div>
+</div>
+
+<div class="legal-wrap">
+  <!-- TABLE OF CONTENTS -->
+  <div class="legal-toc">
+    <div class="toc-title">// Table of Contents</div>
+    <ul class="toc-list">
+      <li><a href="#s1">Information We Collect</a></li>
+      <li><a href="#s2">How We Use Your Information</a></li>
+      <li><a href="#s3">Information Sharing</a></li>
+      <li><a href="#s4">Data Security</a></li>
+      <li><a href="#s5">Cookies & Tracking</a></li>
+      <li><a href="#s6">Your Rights</a></li>
+      <li><a href="#s7">Data Retention</a></li>
+      <li><a href="#s8">Contact Us</a></li>
+    </ul>
+  </div>
+
+  <div class="highlight-box">
+    <strong>Summary:</strong> Trare Technologies is committed to protecting your privacy. We collect only the information necessary to provide our services, never sell your personal data to third parties, and maintain strict security standards to keep your information safe.
+  </div>
+
+  <!-- INTRO -->
+  <div class="legal-section">
+    <p>Trare Technologies ("we," "our," or "us"), a company registered under the Patents and Companies Registration Office (PACRA) in Zambia, is committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.</p>
+    <p>By using our website or services, you consent to the practices described in this Privacy Policy. If you do not agree with the terms of this policy, please do not access or use our services.</p>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="legal-section" id="s1">
+    <h2><span class="sec-num">§ 01</span> Information We Collect</h2>
+    <h3>Information You Provide Directly</h3>
+    <p>We may collect personal information that you voluntarily provide to us, including:</p>
+    <ul>
+      <li>Name and contact information (email address, phone number)</li>
+      <li>Company name and job title</li>
+      <li>Information submitted through our contact or inquiry forms</li>
+      <li>Billing and payment information for services rendered</li>
+      <li>Communications and correspondence with our team</li>
+    </ul>
+    <h3>Information Collected Automatically</h3>
+    <p>When you visit our website, we may automatically collect certain technical information:</p>
+    <ul>
+      <li>IP address and device identifiers</li>
+      <li>Browser type and operating system</li>
+      <li>Pages visited and time spent on our website</li>
+      <li>Referring URLs and exit pages</li>
+      <li>Cookies and similar tracking technologies</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="legal-section" id="s2">
+    <h2><span class="sec-num">§ 02</span> How We Use Your Information</h2>
+    <p>We use the information we collect for the following purposes:</p>
+    <ul>
+      <li>To provide, operate, and improve our IT and cybersecurity services</li>
+      <li>To respond to your inquiries, requests, and support needs</li>
+      <li>To send service updates, security alerts, and administrative communications</li>
+      <li>To process transactions and send related billing information</li>
+      <li>To send marketing communications (with your consent)</li>
+      <li>To analyze website usage and improve user experience</li>
+      <li>To comply with legal obligations under Zambian law</li>
+      <li>To protect the security and integrity of our systems and services</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="legal-section" id="s3">
+    <h2><span class="sec-num">§ 03</span> Information Sharing</h2>
+    <p>Trare Technologies does not sell, trade, or rent your personal information to third parties. We may share your information only in the following limited circumstances:</p>
+    <ul>
+      <li><strong style="color:#fff">Service Providers:</strong> With trusted third-party vendors who assist in operating our website or services, under strict confidentiality agreements</li>
+      <li><strong style="color:#fff">Legal Requirements:</strong> When required by law, court order, or government authority in Zambia</li>
+      <li><strong style="color:#fff">Business Transfers:</strong> In connection with a merger, acquisition, or sale of business assets</li>
+      <li><strong style="color:#fff">Protection of Rights:</strong> To protect the rights, property, or safety of Trare Technologies, our clients, or the public</li>
+    </ul>
+    <div class="highlight-box"><strong>We will never sell your data.</strong> Your personal information is not a product. We maintain it solely to serve you better and deliver our services.</div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="legal-section" id="s4">
+    <h2><span class="sec-num">§ 04</span> Data Security</h2>
+    <p>As a cybersecurity company, data security is at the core of everything we do. We implement industry-standard technical and organizational measures to protect your personal information:</p>
+    <ul>
+      <li>AES-256 encryption for data at rest and in transit</li>
+      <li>Regular security audits and vulnerability assessments</li>
+      <li>Access controls and multi-factor authentication</li>
+      <li>Employee data protection training</li>
+      <li>Incident response procedures for potential data breaches</li>
+    </ul>
+    <p>While we implement robust security measures, no method of transmission over the internet is 100% secure. We encourage clients to also take steps to protect their information.</p>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="legal-section" id="s5">
+    <h2><span class="sec-num">§ 05</span> Cookies & Tracking Technologies</h2>
+    <p>Our website uses cookies and similar tracking technologies to enhance your browsing experience. You can control cookie settings through your browser preferences. We use:</p>
+    <ul>
+      <li><strong style="color:#fff">Essential Cookies:</strong> Required for the website to function properly</li>
+      <li><strong style="color:#fff">Analytics Cookies:</strong> To understand how visitors interact with our website</li>
+      <li><strong style="color:#fff">Marketing Cookies:</strong> To deliver relevant content (only with your consent)</li>
+    </ul>
+    <p>You may disable cookies in your browser settings; however, some features of our website may not function properly as a result.</p>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="legal-section" id="s6">
+    <h2><span class="sec-num">§ 06</span> Your Rights</h2>
+    <p>You have the following rights regarding your personal information:</p>
+    <ul>
+      <li><strong style="color:#fff">Access:</strong> Request a copy of the personal data we hold about you</li>
+      <li><strong style="color:#fff">Correction:</strong> Request correction of inaccurate or incomplete data</li>
+      <li><strong style="color:#fff">Deletion:</strong> Request deletion of your personal data, subject to legal obligations</li>
+      <li><strong style="color:#fff">Objection:</strong> Object to processing of your data for marketing purposes</li>
+      <li><strong style="color:#fff">Withdrawal of Consent:</strong> Withdraw consent for processing at any time</li>
+    </ul>
+    <p>To exercise any of these rights, please contact us using the details in Section 8.</p>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="legal-section" id="s7">
+    <h2><span class="sec-num">§ 07</span> Data Retention</h2>
+    <p>We retain your personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required by law. Specifically:</p>
+    <ul>
+      <li>Client service records: Retained for the duration of the service relationship plus 7 years</li>
+      <li>Marketing contact data: Until you opt out or request deletion</li>
+      <li>Website analytics data: Aggregated and anonymized after 26 months</li>
+      <li>Security logs: Retained for 12 months for threat analysis purposes</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="legal-section" id="s8">
+    <h2><span class="sec-num">§ 08</span> Contact Us</h2>
+    <p>If you have questions about this Privacy Policy or wish to exercise your data rights, please contact us:</p>
+    <ul>
+      <li><strong style="color:#fff">Company:</strong> Trare Technologies</li>
+      <li><strong style="color:#fff">Address:</strong> 44/12 Kaunda Square Stage 1, Lusaka, Zambia</li>
+      <li><strong style="color:#fff">Phone:</strong> +260 0776 514 220 / +260 960 847 673</li>
+      <li><strong style="color:#fff">Website:</strong> Contact form at <a href="contact.html" style="color:var(--green)">our Contact page</a></li>
+    </ul>
+    <p>We will respond to all privacy-related requests within 30 business days.</p>
+    <p>This Privacy Policy may be updated periodically. We will notify you of significant changes by posting the new policy on our website with an updated effective date.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand-col"><div class="footer-logo">TRARE<span>.</span>TECHNOLOGIES</div><div class="footer-slogan">// Quest for Zero Defeat</div><p>Zambia's premier IT and Cybersecurity company, delivering digital defense and software solutions since 2019.</p></div>
+    <div class="footer-col"><h4>Pages</h4><ul><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Services</h4><ul><li><a href="services.html">Cybersecurity</a></li><li><a href="services.html">Pen Testing</a></li><li><a href="services.html">Web Design</a></li><li><a href="services.html">Networking</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a href="privacy-policy.html">Privacy Policy</a></li><li><a href="terms.html">Terms & Conditions</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2024 Trare Technologies · Lusaka, Zambia · PACRA Registered</div>
+    <div class="footer-legal"><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms & Conditions</a></div>
+  </div>
+</footer>
+<script>
+(function(){const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');let W,H,nodes=[];function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}resize();window.addEventListener('resize',resize);const COLORS=['#00ff88','#00d4ff','#00ff88','#00cc6a'];class Node{constructor(){this.init();this.y=Math.random()*H}init(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.55;this.vy=(Math.random()-.5)*.55;this.r=Math.random()*2+1;this.isThreat=Math.random()<.05;this.color=this.isThreat?'#ff2d55':COLORS[Math.floor(Math.random()*COLORS.length)];this.alpha=Math.random()*.35+.15;this.pulse=Math.random()*Math.PI*2;this.ps=.018+Math.random()*.018}update(){this.x+=this.vx;this.y+=this.vy;this.pulse+=this.ps;if(this.x<-60)this.x=W+60;if(this.x>W+60)this.x=-60;if(this.y<-60)this.y=H+60;if(this.y>H+60)this.y=-60}draw(){const a=this.alpha*(0.65+0.35*Math.sin(this.pulse));ctx.save();ctx.globalAlpha=a;ctx.strokeStyle=this.color;ctx.lineWidth=.5;ctx.beginPath();ctx.arc(this.x,this.y,this.r*2.8,0,Math.PI*2);ctx.stroke();ctx.fillStyle=this.color;ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fill();ctx.restore()}}for(let i=0;i<40;i++)nodes.push(new Node());function loop(){ctx.clearRect(0,0,W,H);for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<150){ctx.save();ctx.globalAlpha=(1-d/150)*.12;ctx.strokeStyle='#00ff88';ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.stroke();ctx.restore()}}nodes.forEach(n=>{n.update();n.draw()});requestAnimationFrame(loop)}loop()})();
+</script>
+</body>
+</html>
