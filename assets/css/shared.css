@@ -86,7 +86,7 @@ nav {
 }
 
 .site-logo-nav {
-  height: 38px;
+  height: 50px;
   filter: drop-shadow(0 0 16px rgba(0, 255, 136, 0.14));
 }
 
@@ -309,7 +309,7 @@ footer {
 }
 
 .site-logo-footer {
-  height: 42px;
+  height: 56px;
   filter: drop-shadow(0 0 14px rgba(0, 212, 255, 0.12));
 }
 
@@ -455,7 +455,7 @@ footer {
   }
 
   .site-logo-nav {
-    height: 32px;
+    height: 42px;
   }
 
   body.nav-mobile-ready .nav-links,
