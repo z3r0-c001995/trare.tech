@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Trare Technologies | Quest for Zero Defeat</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #030a0f;
+    --surface: #071318;
+    --surface2: #0c1e27;
+    --green: #00ff88;
+    --green-dim: #00cc6a;
+    --cyan: #00d4ff;
+    --red: #ff2d55;
+    --orange: #ff9500;
+    --text: #c8dde6;
+    --text-dim: #4a6a7a;
+    --border: #0f2d3a;
+    --mono: 'Share Tech Mono', monospace;
+    --display: 'Rajdhani', sans-serif;
+    --body: 'Inter', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--body); font-weight: 300; overflow-x: hidden; }
+
+  /* NODE CANVAS */
+  #node-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 4rem; background: rgba(3,10,15,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: 0.1em; color: #fff; text-decoration: none; }
+  .nav-logo span { color: var(--green); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.15em; color: var(--text-dim); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--green); }
+  .nav-cta { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); border: 1px solid var(--green); padding: 0.5rem 1.2rem; text-decoration: none; transition: background 0.2s, color 0.2s; }
+  .nav-cta:hover { background: var(--green); color: #000; }
+
+  /* HERO */
+  .hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 8rem 4rem 4rem; overflow: hidden; z-index: 1; }
+  .hero-content { max-width: 720px; position: relative; z-index: 2; }
+  .hero-label { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.25em; color: var(--green); text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+  .hero-label::before { content: ''; display: block; width: 32px; height: 1px; background: var(--green); }
+  .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; position: relative; }
+  .pulse-dot::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid var(--green); animation: pulse-ring 2s ease-out infinite; }
+  @keyframes pulse-ring { 0%{transform:scale(1);opacity:.8} 100%{transform:scale(2.5);opacity:0} }
+  .hero h1 { font-family: var(--display); font-size: clamp(3rem, 7vw, 6rem); font-weight: 700; line-height: 1; color: #fff; margin-bottom: 0.3rem; }
+  .hero h1 .accent { color: var(--green); }
+  .hero-slogan { font-family: var(--mono); font-size: 1rem; color: var(--cyan); margin-bottom: 1.5rem; letter-spacing: 0.08em; }
+  .hero p { font-size: 1.05rem; line-height: 1.75; color: var(--text); max-width: 560px; margin-bottom: 2.5rem; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+  .btn-primary { font-family: var(--display); font-weight: 600; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--green); color: #000; padding: 0.85rem 2rem; text-decoration: none; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)); transition: transform 0.2s, box-shadow 0.2s; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0,255,136,.4); }
+  .btn-secondary { font-family: var(--display); font-weight: 600; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); border: 1px solid var(--border); padding: 0.85rem 2rem; text-decoration: none; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)); transition: border-color 0.2s, color 0.2s; }
+  .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  /* TERMINAL */
+  .hero-terminal { position: absolute; right: 4rem; top: 50%; transform: translateY(-50%); width: 380px; background: rgba(3,10,15,.95); border: 1px solid var(--border); border-top: 2px solid var(--green); font-family: var(--mono); font-size: 0.72rem; line-height: 1.7; z-index: 2; }
+  .terminal-header { padding: .7rem 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: .4rem; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-r{background:var(--red)} .dot-y{background:#ffcc00} .dot-g{background:var(--green)}
+  .terminal-title { margin-left: auto; font-size: .62rem; color: var(--text-dim); letter-spacing: .12em; }
+  .terminal-body { padding: 1.2rem; }
+  .t-dim{color:var(--text-dim)} .t-green{color:var(--green)} .t-cyan{color:var(--cyan)} .t-red{color:var(--red)} .t-white{color:#fff} .t-orange{color:var(--orange)}
+  .cursor { display: inline-block; width: 7px; height: 12px; background: var(--green); animation: blink 1s step-end infinite; vertical-align: middle; }
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  .threat-row { display: flex; gap: .6rem; align-items: center; padding: .2rem 0; }
+  .badge { font-size: .6rem; padding: .1rem .4rem; border-radius: 2px; font-weight: bold; }
+  .badge-ok{background:rgba(0,255,136,.15);color:var(--green)}
+  .badge-warn{background:rgba(255,149,0,.15);color:var(--orange)}
+  .badge-crit{background:rgba(255,45,85,.15);color:var(--red);animation:crit-pulse 1.5s ease-in-out infinite}
+  @keyframes crit-pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .scan-bar-wrap{margin:1rem 0 .5rem}
+  .scan-label{font-size:.62rem;color:var(--text-dim);margin-bottom:.35rem}
+  .scan-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+  .scan-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--cyan));width:0%;animation:scan-anim 4s 1s ease-out forwards}
+  @keyframes scan-anim{0%{width:0%}100%{width:87%}}
+
+  /* SOC STRIP */
+  .soc-strip { position: relative; z-index: 1; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
+  .soc-inner { display: flex; }
+  .threat-map-panel { flex: 0 0 420px; border-right: 1px solid var(--border); padding: 1.5rem; }
+  .panel-label { font-family: var(--mono); font-size: .62rem; letter-spacing: .18em; color: var(--green); text-transform: uppercase; margin-bottom: .8rem; display: flex; align-items: center; gap: .5rem; }
+  .panel-label::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse-ring 2s infinite; }
+  .metrics-panel { flex: 1; padding: 1.5rem 2rem; display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); }
+  .metric-cell { background: var(--surface); padding: 1.2rem 1rem; position: relative; overflow: hidden; }
+  .metric-val { font-family: var(--display); font-size: 2rem; font-weight: 700; line-height: 1; transition: color 0.5s; }
+  .metric-val.green{color:var(--green)} .metric-val.cyan{color:var(--cyan)} .metric-val.red{color:var(--red)} .metric-val.orange{color:var(--orange)}
+  .metric-key { font-family: var(--mono); font-size: .6rem; letter-spacing: .15em; color: var(--text-dim); text-transform: uppercase; margin-top: .3rem; }
+  .metric-spark { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+  .spark-green{background:linear-gradient(90deg,transparent,var(--green))}
+  .spark-cyan{background:linear-gradient(90deg,transparent,var(--cyan))}
+  .spark-red{background:linear-gradient(90deg,transparent,var(--red))}
+  .spark-orange{background:linear-gradient(90deg,transparent,var(--orange))}
+  .alert-ticker { flex: 0 0 220px; border-left: 1px solid var(--border); padding: 1.5rem 1.2rem; overflow: hidden; }
+  .ticker-stream { animation: ticker-scroll 20s linear infinite; }
+  @keyframes ticker-scroll{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
+  .ticker-item { display: flex; flex-direction: column; gap: .2rem; padding: .5rem 0; border-bottom: 1px solid rgba(15,45,58,.5); }
+  .ticker-time { font-family: var(--mono); font-size: .58rem; color: var(--text-dim); }
+  .ticker-msg { font-family: var(--mono); font-size: .65rem; }
+
+  /* STATS */
+  .stats-band { position: relative; z-index: 1; border-bottom: 1px solid var(--border); background: rgba(3,10,15,.7); display: flex; justify-content: center; }
+  .stat { flex: 1; max-width: 240px; padding: 2rem 2.5rem; text-align: center; border-right: 1px solid var(--border); }
+  .stat:last-child{border-right:none}
+  .stat-num { font-family: var(--display); font-size: 2.5rem; font-weight: 700; color: var(--green); line-height: 1; }
+  .stat-label { font-family: var(--mono); font-size: .65rem; letter-spacing: .2em; color: var(--text-dim); text-transform: uppercase; margin-top: .4rem; }
+
+  /* SECTIONS */
+  section { position: relative; z-index: 1; }
+  .section-inner { max-width: 1200px; margin: 0 auto; padding: 6rem 4rem; }
+  .section-tag { font-family: var(--mono); font-size: .68rem; letter-spacing: .25em; color: var(--green); text-transform: uppercase; margin-bottom: .8rem; }
+  .section-title { font-family: var(--display); font-size: clamp(2rem,4vw,3rem); font-weight: 700; color: #fff; line-height: 1.1; }
+  .section-subtitle { margin-top: 1rem; font-size: 1rem; color: var(--text-dim); max-width: 500px; line-height: 1.7; }
+  .section-header { margin-bottom: 3.5rem; }
+
+  /* SERVICES */
+  #services { background: rgba(7,19,24,.8); }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1.5px; background: var(--border); border: 1px solid var(--border); }
+  .service-card { background: var(--surface); padding: 2.5rem; position: relative; overflow: hidden; transition: background 0.3s; }
+  .service-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:0; background:var(--green); transition:height .4s; }
+  .service-card:hover { background: var(--surface2); }
+  .service-card:hover::before { height: 100%; }
+  .service-icon { font-size: 2rem; margin-bottom: 1.2rem; display: block; }
+  .service-name { font-family: var(--display); font-size: 1.2rem; font-weight: 600; color: #fff; margin-bottom: .75rem; letter-spacing: .03em; }
+  .service-desc { font-size: .88rem; color: var(--text-dim); line-height: 1.7; }
+
+  /* ABOUT */
+  #about { background: var(--bg); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-box { border: 1px solid var(--border); padding: 3rem; background: var(--surface); position: relative; }
+  .about-box::before { content:''; position:absolute; top:-1px; left:2rem; right:2rem; height:2px; background:linear-gradient(90deg,transparent,var(--green),transparent); }
+  .about-box-label { font-family: var(--mono); font-size: .65rem; letter-spacing: .2em; color: var(--green); text-transform: uppercase; margin-bottom: 1.5rem; }
+  .about-list { list-style: none; }
+  .about-list li { font-size: .88rem; color: var(--text); padding: .75rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: .75rem; }
+  .about-list li::before { content:'▸'; color:var(--green); font-size:.75rem; }
+  .about-list li:last-child { border-bottom: none; }
+  .about-content p { font-size: .95rem; line-height: 1.85; color: var(--text); margin-bottom: 1.2rem; }
+  .about-badge { display:inline-block; font-family:var(--mono); font-size:.7rem; letter-spacing:.12em; color:var(--cyan); border:1px solid rgba(0,212,255,.3); padding:.3rem .75rem; margin-top:.5rem; margin-right:.5rem; }
+
+  /* WHY */
+  #why { background: rgba(7,19,24,.8); }
+  .why-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 2rem; margin-top: 2rem; }
+  .why-card { padding: 2rem; border: 1px solid var(--border); background: var(--bg); transition: border-color .3s, transform .3s; }
+  .why-card:hover { border-color: var(--green-dim); transform: translateY(-4px); }
+  .why-num { font-family: var(--display); font-size: 3rem; font-weight: 700; color: rgba(0,255,136,.12); line-height: 1; margin-bottom: .5rem; }
+  .why-title { font-family: var(--display); font-size: 1.05rem; font-weight: 600; color: #fff; margin-bottom: .6rem; }
+  .why-text { font-size: .85rem; color: var(--text-dim); line-height: 1.7; }
+
+  /* BROCHURE */
+  #brochure { position: relative; z-index: 1; background: linear-gradient(135deg,#030a0f 0%,#071822 50%,#030a0f 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
+  #brochure::before { content:''; position:absolute; inset:0; background-image:radial-gradient(ellipse at 30% 50%,rgba(0,255,136,.05) 0%,transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(0,212,255,.04) 0%,transparent 60%); pointer-events:none; }
+  .brochure-inner { max-width: 1200px; margin: 0 auto; padding: 5rem 4rem; display: flex; align-items: center; gap: 4rem; }
+  .brochure-preview { flex: 0 0 240px; position: relative; }
+  .brochure-cover { width: 100%; aspect-ratio: 3/4; background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--green); position: relative; overflow: hidden; display: flex; flex-direction: column; padding: 1.5rem; }
+  .brochure-cover::after { content:''; position:absolute; bottom:0; left:0; right:0; height:40%; background:linear-gradient(to top,rgba(0,255,136,.06),transparent); pointer-events:none; }
+  .bc-tag { font-family:var(--mono); font-size:.58rem; letter-spacing:.2em; color:var(--green); text-transform:uppercase; margin-bottom:auto; }
+  .bc-title { font-family:var(--display); font-weight:700; font-size:1.4rem; color:#fff; line-height:1.15; margin-bottom:.5rem; }
+  .bc-sub { font-family:var(--mono); font-size:.62rem; color:var(--cyan); letter-spacing:.1em; }
+  .bc-lines { margin-top:auto; display:flex; flex-direction:column; gap:.3rem; }
+  .bc-line { height:2px; background:var(--border); }
+  .bc-line:first-child{width:80%;background:linear-gradient(90deg,var(--green),transparent)}
+  .bc-line:nth-child(2){width:60%;background:linear-gradient(90deg,var(--cyan),transparent)}
+  .bc-line:last-child{width:40%}
+  .brochure-shadow { position:absolute; top:8px; left:8px; right:-8px; bottom:-8px; border:1px solid rgba(0,255,136,.1); background:rgba(0,255,136,.02); z-index:-1; }
+  .brochure-shadow2 { position:absolute; top:16px; left:16px; right:-16px; bottom:-16px; border:1px solid rgba(0,255,136,.05); z-index:-2; }
+  .brochure-text { flex: 1; }
+  .brochure-text h2 { font-family:var(--display); font-size:2.2rem; font-weight:700; color:#fff; line-height:1.15; margin-bottom:1rem; }
+  .brochure-text h2 span{color:var(--green)}
+  .brochure-text p { font-size:.92rem; color:var(--text-dim); line-height:1.8; margin-bottom:1.5rem; max-width:480px; }
+  .brochure-includes { list-style:none; margin-bottom:2rem; display:grid; grid-template-columns:1fr 1fr; gap:.5rem; }
+  .brochure-includes li { font-family:var(--mono); font-size:.68rem; color:var(--text); display:flex; align-items:center; gap:.5rem; }
+  .brochure-includes li::before{content:'✓';color:var(--green);font-weight:bold}
+  .btn-download { display:inline-flex; align-items:center; gap:.75rem; font-family:var(--display); font-weight:700; font-size:1rem; letter-spacing:.08em; text-transform:uppercase; background:transparent; color:var(--green); border:2px solid var(--green); padding:1rem 2rem; text-decoration:none; cursor:pointer; clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px)); transition:background .25s,color .25s,box-shadow .25s; }
+  .btn-download:hover { background:var(--green); color:#000; box-shadow:0 0 40px rgba(0,255,136,.4); }
+  .dl-icon { font-size:1.2rem; animation:bounce-dl 2s ease-in-out infinite; }
+  @keyframes bounce-dl{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+  .brochure-note { margin-top:.75rem; font-family:var(--mono); font-size:.62rem; color:var(--text-dim); letter-spacing:.08em; }
+
+  /* CONTACT */
+  #contact { background: var(--bg); }
+  .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+  .contact-info h3 { font-family:var(--display); font-size:1.8rem; font-weight:700; color:#fff; margin-bottom:1rem; }
+  .contact-info p { font-size:.9rem; color:var(--text-dim); line-height:1.7; margin-bottom:2rem; }
+  .contact-item { display:flex; align-items:flex-start; gap:1rem; margin-bottom:1.2rem; padding:1rem 1.2rem; border:1px solid var(--border); background:var(--surface); }
+  .contact-icon { font-size:1.2rem; flex-shrink:0; margin-top:.1rem; }
+  .contact-item-label { font-family:var(--mono); font-size:.62rem; letter-spacing:.15em; color:var(--green); text-transform:uppercase; margin-bottom:.25rem; }
+  .contact-item-val { font-size:.88rem; color:var(--text); }
+  .contact-form { display:flex; flex-direction:column; gap:1rem; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .form-group { display:flex; flex-direction:column; gap:.4rem; }
+  .form-label { font-family:var(--mono); font-size:.65rem; letter-spacing:.15em; color:var(--text-dim); text-transform:uppercase; }
+  .form-input,.form-textarea { background:var(--surface); border:1px solid var(--border); color:var(--text); padding:.75rem 1rem; font-family:var(--body); font-size:.88rem; outline:none; transition:border-color .2s; width:100%; }
+  .form-input:focus,.form-textarea:focus{border-color:var(--green)}
+  .form-textarea{min-height:120px;resize:vertical}
+  .form-input::placeholder,.form-textarea::placeholder{color:var(--text-dim)}
+
+  /* FOOTER */
+  footer { position:relative; z-index:1; border-top:1px solid var(--border); background:var(--surface); padding:3rem 4rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.5rem; }
+  .footer-brand { font-family:var(--display); font-size:1.2rem; font-weight:700; color:#fff; }
+  .footer-brand span{color:var(--green)}
+  .footer-slogan { font-family:var(--mono); font-size:.68rem; letter-spacing:.18em; color:var(--green); margin-top:.25rem; }
+  .footer-copy { font-family:var(--mono); font-size:.65rem; color:var(--text-dim); letter-spacing:.08em; }
+
+  /* SCROLL FADE */
+  .fade-up { opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
+  .fade-up.visible { opacity:1; transform:translateY(0); }
+
+  /* HERO ANIM */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  .hero-content > * { animation: fadeUp .7s ease both; }
+  .hero-content > *:nth-child(1){animation-delay:.1s}
+  .hero-content > *:nth-child(2){animation-delay:.2s}
+  .hero-content > *:nth-child(3){animation-delay:.3s}
+  .hero-content > *:nth-child(4){animation-delay:.4s}
+  .hero-content > *:nth-child(5){animation-delay:.5s}
+  .hero-terminal{animation:fadeUp .9s .6s ease both}
+
+  /* RESPONSIVE */
+  @media(max-width:1000px){
+    .hero-terminal{display:none}
+    .about-grid,.contact-grid{grid-template-columns:1fr;gap:2.5rem}
+    nav{padding:1rem 1.5rem}
+    .nav-links{display:none}
+    .section-inner{padding:4rem 1.5rem}
+    .hero{padding:7rem 1.5rem 3rem}
+    footer{padding:2rem 1.5rem}
+    .soc-inner{flex-direction:column}
+    .threat-map-panel{flex:unset;border-right:none;border-bottom:1px solid var(--border)}
+    .metrics-panel{grid-template-columns:repeat(2,1fr)}
+    .alert-ticker{border-left:none;border-top:1px solid var(--border);flex:unset}
+    .brochure-inner{flex-direction:column;padding:3rem 1.5rem}
+    .brochure-preview{flex:unset;width:180px}
+    .brochure-includes{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .form-row{grid-template-columns:1fr}
+    .stats-band{flex-wrap:wrap}
+    .stat{min-width:50%;border-bottom:1px solid var(--border)}
+    .metrics-panel{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="node-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">TRARE<span>.</span>TECH</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#brochure">Brochure</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="#contact">Get Secured</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-label">Lusaka, Zambia · Est. 2019 <span class="pulse-dot"></span></div>
+    <h1>Digital <span class="accent">Defense</span><br/>Starts Here.</h1>
+    <div class="hero-slogan">// Quest for Zero Defeat</div>
+    <p>Trare Technologies is Zambia's premier IT and Cybersecurity company. We fortify digital landscapes against evolving threats — from penetration testing to full-stack web solutions.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#services">Our Services</a>
+      <a class="btn-secondary" href="#contact">Talk to Us</a>
+    </div>
+  </div>
+  <div class="hero-terminal">
+    <div class="terminal-header">
+      <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+      <span class="terminal-title">TRARE · SOC MONITOR v2.4</span>
+    </div>
+    <div class="terminal-body">
+      <div class="t-dim">// Live Threat Intelligence Feed</div><br/>
+      <div class="threat-row"><span class="badge badge-ok">OK</span><span class="t-green">firewall</span><span class="t-dim">&nbsp;All ports secured</span></div>
+      <div class="threat-row"><span class="badge badge-ok">OK</span><span class="t-green">encryption</span><span class="t-dim">&nbsp;AES-256 active</span></div>
+      <div class="threat-row"><span class="badge badge-warn">WARN</span><span class="t-orange">intrusion_probe</span><span class="t-dim">&nbsp;192.168.x.x</span></div>
+      <div class="threat-row"><span class="badge badge-ok">OK</span><span class="t-green">vpn_tunnel</span><span class="t-dim">&nbsp;Encrypted</span></div>
+      <div class="threat-row"><span class="badge badge-crit">CRIT</span><span class="t-red">port_scan</span><span class="t-dim">&nbsp;Blocked · 3ms</span></div>
+      <div class="threat-row"><span class="badge badge-ok">OK</span><span class="t-green">ssl_cert</span><span class="t-dim">&nbsp;Valid · 312 days</span></div><br/>
+      <div class="scan-bar-wrap">
+        <div class="scan-label t-dim">Network scan progress...</div>
+        <div class="scan-bar"><div class="scan-fill"></div></div>
+      </div><br/>
+      <div class="t-dim">// Response team: <span class="t-green">ONLINE</span></div>
+      <div class="t-dim">// Threats neutralized today: <span class="t-white">7</span></div><br/>
+      <div><span class="t-green">$</span> <span class="t-dim">monitoring active...</span><span class="cursor"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOC DASHBOARD STRIP -->
+<div class="soc-strip">
+  <div class="soc-inner">
+    <div class="threat-map-panel">
+      <div class="panel-label">Live Network Threat Map</div>
+      <canvas id="threat-canvas" width="370" height="200"></canvas>
+    </div>
+    <div class="metrics-panel">
+      <div class="metric-cell"><div class="metric-val green" id="m1">247</div><div class="metric-key">Threats Blocked</div><div class="metric-spark spark-green"></div></div>
+      <div class="metric-cell"><div class="metric-val cyan" id="m2">99.9%</div><div class="metric-key">Uptime SLA</div><div class="metric-spark spark-cyan"></div></div>
+      <div class="metric-cell"><div class="metric-val orange" id="m3">3</div><div class="metric-key">Active Probes</div><div class="metric-spark spark-orange"></div></div>
+      <div class="metric-cell"><div class="metric-val green" id="m4">0</div><div class="metric-key">Breaches</div><div class="metric-spark spark-green"></div></div>
+    </div>
+    <div class="alert-ticker">
+      <div class="panel-label">Alert Feed</div>
+      <div class="ticker-stream" id="ticker-stream"></div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-band">
+  <div class="stat fade-up"><div class="stat-num">2019</div><div class="stat-label">Founded</div></div>
+  <div class="stat fade-up"><div class="stat-num">6+</div><div class="stat-label">Expert Team</div></div>
+  <div class="stat fade-up"><div class="stat-num">100%</div><div class="stat-label">PACRA Registered</div></div>
+  <div class="stat fade-up"><div class="stat-num">0</div><div class="stat-label">Defeated Clients</div></div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="section-header fade-up">
+      <div class="section-tag">// What We Do</div>
+      <h2 class="section-title">Services Built for<br/>the Digital Battlefield</h2>
+      <p class="section-subtitle">From hardening your defenses to building your digital presence — we cover the full stack.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-up"><span class="service-icon">🛡️</span><div class="service-name">Cybersecurity</div><div class="service-desc">Comprehensive threat analysis and defense strategies to protect your organization from advanced persistent threats and cyberattacks.</div></div>
+      <div class="service-card fade-up"><span class="service-icon">🔍</span><div class="service-name">Penetration Testing</div><div class="service-desc">Proactive security assessments that simulate real-world attacks to identify vulnerabilities before malicious actors do.</div></div>
+      <div class="service-card fade-up"><span class="service-icon">🌐</span><div class="service-name">Web Design & Development</div><div class="service-desc">Visually stunning, responsive websites tailored to your brand — built for performance, security, and seamless user experience.</div></div>
+      <div class="service-card fade-up"><span class="service-icon">📡</span><div class="service-name">IT Networking</div><div class="service-desc">End-to-end network design, deployment, and management. Reliable, scalable infrastructure for businesses of all sizes.</div></div>
+      <div class="service-card fade-up"><span class="service-icon">📈</span><div class="service-name">Digital Marketing</div><div class="service-desc">Data-driven digital marketing solutions that amplify your brand's reach and drive measurable business results.</div></div>
+      <div class="service-card fade-up"><span class="service-icon">💻</span><div class="service-name">Software Solutions</div><div class="service-desc">Custom software applications designed and developed to solve your unique business challenges with precision and reliability.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-visual fade-up">
+        <div class="about-box">
+          <div class="about-box-label">// Company Profile</div>
+          <ul class="about-list">
+            <li>Officially registered with PACRA, Zambia</li>
+            <li>Founded in Lusaka in 2019</li>
+            <li>Led by Joshua Grant Kana</li>
+            <li>6–10 specialist team members</li>
+            <li>IT, Cybersecurity & Software focus</li>
+            <li>Open 7 days a week</li>
+            <li>Located: Kaunda Square Stage 1</li>
+          </ul>
+        </div>
+      </div>
+      <div class="about-content fade-up">
+        <div class="section-tag">// About Us</div>
+        <h2 class="section-title" style="margin-bottom:1.5rem;">Zambia's Cybersecurity Ally</h2>
+        <p>Trare Technologies is a proudly Zambian company on a mission to fortify the nation's digital landscape. Since 2019, we have been delivering cutting-edge IT and cybersecurity solutions to businesses and individuals across Zambia.</p>
+        <p>Our slogan — <em style="color:var(--cyan);">"Quest for Zero Defeat"</em> — is not just a tagline. It is a covenant with every client we serve. We commit relentlessly to ensuring that our clients never lose a digital battle.</p>
+        <p>Grounded in innovation, resilience, and local expertise, we combine global cybersecurity best practices with a deep understanding of the Zambian tech landscape.</p>
+        <div style="margin-top:1.5rem;">
+          <span class="about-badge">PACRA Registered</span>
+          <span class="about-badge">Est. 2019</span>
+          <span class="about-badge">Lusaka Based</span>
+          <span class="about-badge">IT & Cybersecurity</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="section-inner">
+    <div class="section-header fade-up">
+      <div class="section-tag">// Why Choose Us</div>
+      <h2 class="section-title">Built Different.<br/>Trusted Locally.</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card fade-up"><div class="why-num">01</div><div class="why-title">Local Expertise</div><div class="why-text">We understand the Zambian business environment, compliance requirements, and the specific digital threats facing local organizations.</div></div>
+      <div class="why-card fade-up"><div class="why-num">02</div><div class="why-title">End-to-End Solutions</div><div class="why-text">From hardware to software, web to security — we cover every layer of your technology stack so you never need to look elsewhere.</div></div>
+      <div class="why-card fade-up"><div class="why-num">03</div><div class="why-title">Proactive Defense</div><div class="why-text">We don't wait for attacks to happen. Our proactive penetration testing and monitoring keeps threats at bay before they strike.</div></div>
+      <div class="why-card fade-up"><div class="why-num">04</div><div class="why-title">Always Available</div><div class="why-text">Open 7 days a week, our team is accessible when you need us most — because cyber threats don't keep office hours.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BROCHURE DOWNLOAD -->
+<section id="brochure">
+  <div class="brochure-inner">
+    <div class="brochure-preview fade-up">
+      <div class="brochure-shadow2"></div>
+      <div class="brochure-shadow"></div>
+      <div class="brochure-cover">
+        <div class="bc-tag">// Company Overview · 2024</div>
+        <div style="margin:auto 0;">
+          <div class="bc-title">Trare<br/>Technologies</div>
+          <div class="bc-sub">Quest for Zero Defeat</div>
+        </div>
+        <div class="bc-lines">
+          <div class="bc-line"></div><div class="bc-line"></div><div class="bc-line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="brochure-text fade-up">
+      <div class="section-tag">// Company Brochure</div>
+      <h2>Download Our<br/><span>Official Brochure</span></h2>
+      <p>Get a comprehensive overview of Trare Technologies — our services, cybersecurity methodology, software delivery approach, and how we help Zambian businesses thrive in a connected world.</p>
+      <ul class="brochure-includes">
+        <li>Full services overview</li>
+        <li>Cybersecurity methodology</li>
+        <li>Penetration testing process</li>
+        <li>Web & software delivery</li>
+        <li>Team & credentials</li>
+        <li>Pricing guidance</li>
+        <li>Client onboarding steps</li>
+        <li>Contact & office details</li>
+      </ul>
+      <a class="btn-download" href="mailto:traretechnologies@email.com?subject=Brochure%20Request&body=Hello%20Trare%20Technologies%2C%0A%0AI%20would%20like%20to%20request%20a%20copy%20of%20your%20company%20brochure.%0A%0AThank%20you.">
+        <span class="dl-icon">⬇</span> Download Brochure
+      </a>
+      <div class="brochure-note">PDF · ~2MB · Available in English &nbsp;|&nbsp; Or call +260 0776 514 220 to request a printed copy</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="contact-info fade-up">
+        <div class="section-tag">// Contact</div>
+        <h3>Ready to Secure<br/>Your Future?</h3>
+        <p>Reach out to our team. Whether you need a security audit, a new website, or a complete IT overhaul — we are here to help.</p>
+        <div class="contact-item"><span class="contact-icon">📍</span><div><div class="contact-item-label">Location</div><div class="contact-item-val">44/12 Kaunda Square Stage 1, Lusaka, Zambia</div></div></div>
+        <div class="contact-item"><span class="contact-icon">📞</span><div><div class="contact-item-label">Phone</div><div class="contact-item-val">+260 0776 514 220</div><div class="contact-item-val" style="margin-top:.2rem">+260 960 847 673</div></div></div>
+        <div class="contact-item"><span class="contact-icon">🕐</span><div><div class="contact-item-label">Hours</div><div class="contact-item-val">Mon–Fri: 8:00am – 8:00pm</div><div class="contact-item-val" style="margin-top:.2rem">Sat: 8:00am – 6:00pm · Sun: 8:00am – 2:00pm</div></div></div>
+      </div>
+      <form class="contact-form fade-up" onsubmit="return false;">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Name</label><input class="form-input" type="text" placeholder="Your name"/></div>
+          <div class="form-group"><label class="form-label">Company</label><input class="form-input" type="text" placeholder="Your company"/></div>
+        </div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com"/></div>
+        <div class="form-group">
+          <label class="form-label">Service Needed</label>
+          <select class="form-input" style="cursor:pointer;">
+            <option value="" disabled selected>Select a service...</option>
+            <option>Cybersecurity Audit</option><option>Penetration Testing</option><option>Web Design & Development</option><option>IT Networking</option><option>Digital Marketing</option><option>Software Solutions</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="Tell us about your needs..."></textarea></div>
+        <button type="submit" class="btn-primary" style="border:none;cursor:pointer;font-size:.88rem;">Send Message →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">TRARE<span>.</span>TECHNOLOGIES</div>
+    <div class="footer-slogan">// Quest for Zero Defeat</div>
+  </div>
+  <div class="footer-copy">© 2024 Trare Technologies · Lusaka, Zambia · PACRA Registered</div>
+</footer>
+
+<script>
+// =============================================
+// 1. FULL-PAGE ANIMATED NODE NETWORK (Canvas)
+// =============================================
+(function(){
+  const canvas = document.getElementById('node-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes = [];
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const COUNT = 60, CONNECT = 180;
+  const COLORS = ['#00ff88','#00d4ff','#00ff88','#00cc6a','#00d4ff'];
+
+  class Node {
+    constructor(){ this.init(); this.y = Math.random()*H; }
+    init(){
+      this.x = Math.random()*W; this.y = Math.random()*H;
+      this.vx = (Math.random()-.5)*.55; this.vy = (Math.random()-.5)*.55;
+      this.r = Math.random()*2+1;
+      this.isThreat = Math.random()<.07;
+      this.color = this.isThreat ? '#ff2d55' : COLORS[Math.floor(Math.random()*COLORS.length)];
+      this.alpha = Math.random()*.45+.2;
+      this.pulse = Math.random()*Math.PI*2;
+      this.ps = .018+Math.random()*.018;
+    }
+    update(){
+      this.x += this.vx; this.y += this.vy; this.pulse += this.ps;
+      if(this.x<-60)this.x=W+60; if(this.x>W+60)this.x=-60;
+      if(this.y<-60)this.y=H+60; if(this.y>H+60)this.y=-60;
+    }
+    draw(){
+      const a = this.alpha*(0.65+0.35*Math.sin(this.pulse));
+      ctx.save(); ctx.globalAlpha = a;
+      ctx.strokeStyle = this.color; ctx.lineWidth = .5;
+      ctx.beginPath(); ctx.arc(this.x,this.y,this.r*2.8,0,Math.PI*2); ctx.stroke();
+      ctx.fillStyle = this.color;
+      ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fill();
+      const g = ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.r*6);
+      g.addColorStop(0,this.color+'2a'); g.addColorStop(1,'transparent');
+      ctx.beginPath(); ctx.arc(this.x,this.y,this.r*6,0,Math.PI*2);
+      ctx.fillStyle=g; ctx.fill(); ctx.restore();
+    }
+  }
+
+  for(let i=0;i<COUNT;i++) nodes.push(new Node());
+
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<CONNECT){
+          const al=(1-d/CONNECT)*.22;
+          const col=(nodes[i].isThreat||nodes[j].isThreat)?'#ff2d55':'#00ff88';
+          ctx.save(); ctx.globalAlpha=al; ctx.strokeStyle=col; ctx.lineWidth=.7;
+          ctx.beginPath(); ctx.moveTo(nodes[i].x,nodes[i].y); ctx.lineTo(nodes[j].x,nodes[j].y); ctx.stroke(); ctx.restore();
+        }
+      }
+    }
+    nodes.forEach(n=>{n.update();n.draw();});
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// =============================================
+// 2. THREAT MAP CANVAS (SOC strip)
+// =============================================
+(function(){
+  const canvas = document.getElementById('threat-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+
+  const nodes = [
+    {x:185,y:100,label:'CORE',type:'core'},
+    {x:58,y:38,label:'FW',type:'fw'},
+    {x:312,y:38,label:'DMZ',type:'dmz'},
+    {x:58,y:162,label:'LAN',type:'lan'},
+    {x:312,y:162,label:'WEB',type:'web'},
+    {x:185,y:22,label:'IDS',type:'ids'},
+    {x:108,y:100,label:'VPN',type:'vpn'},
+    {x:262,y:100,label:'DB',type:'db'},
+    {x:22,y:100,label:'EXT',type:'threat'},
+    {x:348,y:100,label:'EXT',type:'threat'},
+    {x:185,y:178,label:'EDR',type:'ids'},
+  ];
+  const edges=[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[0,10],[1,8],[2,9],[6,1],[7,2]];
+
+  const packets=[];
+  function spawnPacket(){
+    const e=edges[Math.floor(Math.random()*edges.length)];
+    const threat=Math.random()<.2;
+    packets.push({from:e[0],to:e[1],t:0,speed:.009+Math.random()*.012,
+      color:threat?'#ff2d55':(Math.random()<.5?'#00ff88':'#00d4ff'),
+      blocked:threat&&Math.random()<.65});
+  }
+  setInterval(spawnPacket,500);
+
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // grid
+    ctx.save(); ctx.strokeStyle='rgba(15,45,58,.7)'; ctx.lineWidth=1;
+    for(let x=0;x<W;x+=30){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    ctx.restore();
+
+    // edges
+    edges.forEach(([a,b])=>{
+      const na=nodes[a],nb=nodes[b];
+      ctx.save(); ctx.strokeStyle='rgba(0,255,136,.1)'; ctx.lineWidth=1; ctx.setLineDash([4,8]);
+      ctx.beginPath(); ctx.moveTo(na.x,na.y); ctx.lineTo(nb.x,nb.y); ctx.stroke(); ctx.restore();
+    });
+
+    // packets
+    for(let i=packets.length-1;i>=0;i--){
+      const p=packets[i];
+      p.t+=p.speed;
+      if(p.t>=1){packets.splice(i,1);continue;}
+      const na=nodes[p.from],nb=nodes[p.to];
+      const stopT=p.blocked?.55:1;
+      const t2=Math.min(p.t,stopT);
+      const x=na.x+(nb.x-na.x)*t2, y=na.y+(nb.y-na.y)*t2;
+      if(p.blocked&&p.t>=.55){
+        ctx.save(); ctx.strokeStyle='#ff2d55'; ctx.lineWidth=1.5;
+        const s=4;
+        ctx.beginPath();ctx.moveTo(x-s,y-s);ctx.lineTo(x+s,y+s);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(x+s,y-s);ctx.lineTo(x-s,y+s);ctx.stroke();
+        ctx.restore(); continue;
+      }
+      ctx.save(); ctx.globalAlpha=1-p.t*.3;
+      ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+      const pt=Math.max(0,t2-.1);
+      const tx=na.x+(nb.x-na.x)*pt, ty=na.y+(nb.y-na.y)*pt;
+      const g=ctx.createLinearGradient(tx,ty,x,y);
+      g.addColorStop(0,'transparent'); g.addColorStop(1,p.color+'99');
+      ctx.strokeStyle=g; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(x,y); ctx.stroke(); ctx.restore();
+    }
+
+    // nodes
+    nodes.forEach(n=>{
+      const isCore=n.type==='core', isThreat=n.type==='threat';
+      const col=isThreat?'#ff2d55':(n.type==='fw'||n.type==='ids')?'#00d4ff':'#00ff88';
+      const r=isCore?10:6;
+      if(isCore){
+        ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=1;
+        ctx.globalAlpha=.18+.12*Math.sin(frame*.04);
+        ctx.beginPath(); ctx.arc(n.x,n.y,r+10+4*Math.sin(frame*.04),0,Math.PI*2); ctx.stroke(); ctx.restore();
+      }
+      ctx.save();
+      const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r*2.5);
+      g.addColorStop(0,col+'44'); g.addColorStop(1,'transparent');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(n.x,n.y,r*2.5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=col+'22'; ctx.strokeStyle=col; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.arc(n.x,n.y,r,0,Math.PI*2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle='#c8dde6'; ctx.font=`${isCore?'700':'400'} 7px Share Tech Mono`;
+      ctx.textAlign='center'; ctx.fillText(n.label,n.x,n.y+r+9); ctx.restore();
+    });
+
+    frame++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// =============================================
+// 3. LIVE METRICS
+// =============================================
+(function(){
+  let threats=247;
+  setInterval(()=>{
+    if(Math.random()<.3){
+      threats++;
+      const el=document.getElementById('m1');
+      el.textContent=threats;
+      el.style.color='#fff';
+      setTimeout(()=>{el.style.color='var(--green)';},300);
+    }
+    document.getElementById('m3').textContent=Math.floor(Math.random()*5+1);
+  },2800);
+})();
+
+// =============================================
+// 4. ALERT TICKER
+// =============================================
+(function(){
+  const alerts=[
+    {time:'14:32:01',msg:'Port scan blocked · 41.x.x.x',col:'#ff2d55'},
+    {time:'14:31:48',msg:'SSL handshake OK · client_42',col:'#00ff88'},
+    {time:'14:31:22',msg:'Brute force attempt · LAN',col:'#ff9500'},
+    {time:'14:30:59',msg:'VPN tunnel established',col:'#00d4ff'},
+    {time:'14:30:31',msg:'Malware signature detected',col:'#ff2d55'},
+    {time:'14:29:44',msg:'Patch applied · CVE-2024-xx',col:'#00ff88'},
+    {time:'14:28:17',msg:'SQL injection blocked',col:'#ff2d55'},
+    {time:'14:27:50',msg:'Backup completed · 4.2GB',col:'#00ff88'},
+    {time:'14:27:03',msg:'Anomaly detected · DB svr',col:'#ff9500'},
+    {time:'14:26:41',msg:'Firewall rule updated',col:'#00d4ff'},
+  ];
+  const el=document.getElementById('ticker-stream');
+  let html='';
+  [...alerts,...alerts].forEach(a=>{
+    html+=`<div class="ticker-item"><span class="ticker-time">${a.time}</span><span class="ticker-msg" style="color:${a.col}">${a.msg}</span></div>`;
+  });
+  el.innerHTML=html;
+})();
+
+// =============================================
+// 5. SCROLL FADE IN
+// =============================================
+(function(){
+  const els=document.querySelectorAll('.fade-up');
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);} });
+  },{threshold:.12});
+  els.forEach(el=>io.observe(el));
+})();
+</script>
+</body>
+</html>
