@@ -1,5 +1,22 @@
 (function () {
   const MOBILE_BREAKPOINT = 1000;
+  const PAGE_BY_FILENAME = {
+    '': 'home',
+    'index.html': 'home',
+    'services.html': 'services',
+    'about.html': 'about',
+    'blog.html': 'blog',
+    'contact.html': 'contact',
+    'privacy.html': 'privacy',
+    'terms.html': 'terms',
+  };
+  const NAV_ITEMS = [
+    { key: 'home', href: 'index.html', label: 'Home' },
+    { key: 'services', href: 'services.html', label: 'Services' },
+    { key: 'about', href: 'about.html', label: 'About' },
+    { key: 'blog', href: 'blog.html', label: 'Blog' },
+    { key: 'contact', href: 'contact.html', label: 'Contact' },
+  ];
 
   function onReady(handler) {
     if (document.readyState === 'loading') {
@@ -7,6 +24,91 @@
       return;
     }
     handler();
+  }
+
+  function inferCurrentPage() {
+    const explicitPage = (document.body?.dataset.page || '').trim().toLowerCase();
+    if (explicitPage) {
+      return explicitPage;
+    }
+
+    const pathname = decodeURIComponent(window.location.pathname || '').toLowerCase();
+    const filename = pathname.split('/').pop() || '';
+    return PAGE_BY_FILENAME[filename] || '';
+  }
+
+  function buildSharedNav(activePage, logoSrc) {
+    const navLinks = NAV_ITEMS.map((item) => {
+      const isActive = item.key === activePage;
+      return `<li><a href="${item.href}"${isActive ? ' class="active" aria-current="page"' : ''}>${item.label}</a></li>`;
+    }).join('');
+
+    return `<nav>
+  <a class="nav-logo" href="index.html"><img class="site-logo site-logo-nav" src="${logoSrc}" alt="Trare Technologies logo"/><span class="sr-only">Trare Technologies</span></a>
+  <ul class="nav-links">${navLinks}</ul>
+  <a class="nav-cta" href="contact.html">Get Secured</a>
+</nav>`;
+  }
+
+  function buildSharedFooter(logoSrc) {
+    return `<div class="footer-grid">
+    <div class="footer-brand-col">
+      <div class="footer-logo"><img class="site-logo site-logo-footer" src="${logoSrc}" alt="Trare Technologies logo"/><span class="sr-only">Trare Technologies</span></div>
+      <div class="footer-slogan">// Quest for Zero Defeat</div>
+      <p>Zambia's premier IT and Cybersecurity company, delivering digital defense and software solutions since 2019.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Pages</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="services.html">Cybersecurity</a></li>
+        <li><a href="services.html">Pen Testing</a></li>
+        <li><a href="services.html">Web Design</a></li>
+        <li><a href="services.html">Networking</a></li>
+        <li><a href="services.html">Software</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:+2600776514220">+260 0776 514 220</a></li>
+        <li><a href="tel:+260960847673">+260 960 847 673</a></li>
+        <li><a href="contact.html">Send Message</a></li>
+        <li><a href="index.html#brochure">Get Brochure</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2024 Trare Technologies &middot; Lusaka, Zambia &middot; PACRA Registered</div>
+    <div class="footer-legal">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+    </div>
+  </div>`;
+  }
+
+  function mountSharedLayout() {
+    const logoSrc = (document.body?.dataset.logoSrc || 'assets/img/logo.png').trim();
+    const activePage = inferCurrentPage();
+    const headerHost = document.getElementById('site-header');
+    const footerHost = document.getElementById('site-footer');
+
+    if (headerHost) {
+      headerHost.innerHTML = buildSharedNav(activePage, logoSrc);
+    }
+
+    if (footerHost) {
+      footerHost.innerHTML = buildSharedFooter(logoSrc);
+    }
   }
 
   function parseNumber(value, fallback) {
@@ -74,7 +176,7 @@
     closeButton.type = 'button';
     closeButton.className = 'mobile-nav-close';
     closeButton.setAttribute('aria-label', 'Close navigation menu');
-    closeButton.innerHTML = '<span aria-hidden="true">×</span>';
+    closeButton.innerHTML = '<span aria-hidden="true">&times;</span>';
     panel.appendChild(closeButton);
 
     const title = document.createElement('div');
@@ -198,9 +300,9 @@
     const linkDistance = parseNumber(canvas.dataset.linkDistance, 180);
     const linkAlpha = parseNumber(canvas.dataset.linkAlpha, 0.22);
     const speedScale = parseNumber(canvas.dataset.speed, 0.55);
-    const linkColor = canvas.dataset.linkColor || '#00ff88';
-    const threatLinkColor = canvas.dataset.linkThreatColor || '#ff2d55';
-    const palette = (canvas.dataset.palette || '#00ff88,#00d4ff,#00ff88,#00cc6a')
+    const linkColor = canvas.dataset.linkColor || '#1e90ff';
+    const threatLinkColor = canvas.dataset.linkThreatColor || '#8a5cff';
+    const palette = (canvas.dataset.palette || '#1e90ff,#ff8c00,#1e90ff,#2f66ff')
       .split(',')
       .map((item) => item.trim())
       .filter(Boolean);
@@ -228,7 +330,7 @@
         vy: (Math.random() - 0.5) * speedScale,
         radius: Math.random() * 2 + 1,
         isThreat,
-        color: isThreat ? '#ff2d55' : palette[Math.floor(Math.random() * palette.length)],
+        color: isThreat ? '#8a5cff' : palette[Math.floor(Math.random() * palette.length)],
         alpha: Math.random() * 0.45 + 0.2,
         pulse: Math.random() * Math.PI * 2,
         pulseSpeed: 0.018 + Math.random() * 0.018,
@@ -551,6 +653,7 @@
   }
 
   onReady(() => {
+    mountSharedLayout();
     applyExternalLinkSafety();
     initMobileNav();
     initRevealAnimations();

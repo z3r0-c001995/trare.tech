@@ -50,19 +50,19 @@
 
     const packets = [];
     const TYPE_COLORS = {
-      core: '#00ff88',
-      fw: '#00d4ff',
-      dmz: '#00cc6a',
-      lan: '#00cc6a',
-      web: '#00cc6a',
-      ids: '#00d4ff',
-      vpn: '#00ff88',
-      db: '#00ff88',
-      threat: '#ff2d55',
+      core: '#1e90ff',
+      fw: '#ff8c00',
+      dmz: '#2f66ff',
+      lan: '#2f66ff',
+      web: '#2f66ff',
+      ids: '#ff8c00',
+      vpn: '#1e90ff',
+      db: '#1e90ff',
+      threat: '#8a5cff',
     };
 
     function getNodeColor(type) {
-      return TYPE_COLORS[type] || '#00ff88';
+      return TYPE_COLORS[type] || '#1e90ff';
     }
 
     function drawNodeIcon(type, x, y, radius, color) {
@@ -174,7 +174,7 @@
         to: edge[1],
         t: 0,
         speed: 0.009 + Math.random() * 0.012,
-        color: isThreat ? '#ff2d55' : Math.random() < 0.5 ? '#00ff88' : '#00d4ff',
+        color: isThreat ? '#8a5cff' : Math.random() < 0.5 ? '#1e90ff' : '#ff8c00',
         blocked: isThreat && Math.random() < 0.65,
       });
     }
@@ -193,7 +193,7 @@
       ctx.restore();
 
       ctx.save();
-      ctx.strokeStyle = 'rgba(0,212,255,.09)';
+      ctx.strokeStyle = 'rgba(255,140,0,.09)';
       ctx.lineWidth = 1;
       for (let x = 0; x < width; x += 30) {
         ctx.beginPath();
@@ -207,7 +207,7 @@
         ctx.lineTo(width, y);
         ctx.stroke();
       }
-      ctx.strokeStyle = 'rgba(0,212,255,.2)';
+      ctx.strokeStyle = 'rgba(255,140,0,.2)';
       for (let x = 0; x < width; x += 60) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
@@ -220,7 +220,7 @@
         const na = nodes[a];
         const nb = nodes[b];
         ctx.save();
-        ctx.strokeStyle = 'rgba(0,255,136,.16)';
+        ctx.strokeStyle = 'rgba(30,144,255,.16)';
         ctx.lineWidth = 1;
         ctx.setLineDash([3, 7]);
         ctx.beginPath();
@@ -248,7 +248,7 @@
 
         if (packet.blocked && packet.t >= 0.55) {
           ctx.save();
-          ctx.strokeStyle = '#ff2d55';
+          ctx.strokeStyle = '#8a5cff';
           ctx.lineWidth = 1.5;
           const size = 4;
           ctx.beginPath();
@@ -312,7 +312,7 @@
         ctx.arc(node.x, node.y, radius * 2.5, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.fillStyle = isThreat ? 'rgba(255,45,85,.12)' : color + '22';
+        ctx.fillStyle = isThreat ? 'rgba(138,92,255,.12)' : color + '22';
         ctx.strokeStyle = color;
         ctx.lineWidth = 1.5;
         ctx.beginPath();
@@ -382,16 +382,16 @@
     }
 
     const alerts = [
-      { time: '14:32:01', msg: 'Port scan blocked · 41.x.x.x', col: '#ff2d55' },
-      { time: '14:31:48', msg: 'SSL handshake OK · client_42', col: '#00ff88' },
-      { time: '14:31:22', msg: 'Brute force attempt · LAN', col: '#ff9500' },
-      { time: '14:30:59', msg: 'VPN tunnel established', col: '#00d4ff' },
-      { time: '14:30:31', msg: 'Malware signature detected', col: '#ff2d55' },
-      { time: '14:29:44', msg: 'Patch applied · CVE-2024-xx', col: '#00ff88' },
-      { time: '14:28:17', msg: 'SQL injection blocked', col: '#ff2d55' },
-      { time: '14:27:50', msg: 'Backup completed · 4.2GB', col: '#00ff88' },
-      { time: '14:27:03', msg: 'Anomaly detected · DB svr', col: '#ff9500' },
-      { time: '14:26:41', msg: 'Firewall rule updated', col: '#00d4ff' },
+      { time: '14:32:01', msg: 'Port scan blocked · 41.x.x.x', col: '#8a5cff' },
+      { time: '14:31:48', msg: 'SSL handshake OK · client_42', col: '#1e90ff' },
+      { time: '14:31:22', msg: 'Brute force attempt · LAN', col: '#ff8c00' },
+      { time: '14:30:59', msg: 'VPN tunnel established', col: '#ff8c00' },
+      { time: '14:30:31', msg: 'Malware signature detected', col: '#8a5cff' },
+      { time: '14:29:44', msg: 'Patch applied · CVE-2024-xx', col: '#1e90ff' },
+      { time: '14:28:17', msg: 'SQL injection blocked', col: '#8a5cff' },
+      { time: '14:27:50', msg: 'Backup completed · 4.2GB', col: '#1e90ff' },
+      { time: '14:27:03', msg: 'Anomaly detected · DB svr', col: '#ff8c00' },
+      { time: '14:26:41', msg: 'Firewall rule updated', col: '#ff8c00' },
     ];
 
     const markup = [...alerts, ...alerts]
