@@ -57,11 +57,12 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
 @media(max-width:1000px){nav{padding:1rem 1.5rem}.nav-links{display:none}.legal-wrap{padding:3rem 1.5rem}.page-hero{padding:8rem 1.5rem 3rem}.toc-list{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}footer{padding:2rem 1.5rem}}
 @media(max-width:600px){.footer-grid{grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="assets/css/shared.css"/>
 </head>
 <body>
-<canvas id="node-canvas"></canvas>
+<canvas id="node-canvas" data-nodes="40" data-threat-rate="0.05" data-link-distance="150" data-link-alpha="0.12" data-link-color="#00d4ff" data-link-threat-color="#ff2d55"></canvas>
 <nav>
-  <a class="nav-logo" href="index.html">TRARE<span>.</span>TECH</a>
+  <a class="nav-logo" href="index.html"><img class="site-logo site-logo-nav" src="assets/img/logo.jpeg" alt="Trare Technologies logo"/><span class="sr-only">Trare Technologies</span></a>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="services.html">Services</a></li>
@@ -231,18 +232,17 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
 
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand-col"><div class="footer-logo">TRARE<span>.</span>TECHNOLOGIES</div><div class="footer-slogan">// Quest for Zero Defeat</div><p>Zambia's premier IT and Cybersecurity company, delivering digital defense and software solutions since 2019.</p></div>
+    <div class="footer-brand-col"><div class="footer-logo"><img class="site-logo site-logo-footer" src="assets/img/logo.jpeg" alt="Trare Technologies logo"/><span class="sr-only">Trare Technologies</span></div><div class="footer-slogan">// Quest for Zero Defeat</div><p>Zambia's premier IT and Cybersecurity company, delivering digital defense and software solutions since 2019.</p></div>
     <div class="footer-col"><h4>Pages</h4><ul><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
     <div class="footer-col"><h4>Services</h4><ul><li><a href="services.html">Cybersecurity</a></li><li><a href="services.html">Pen Testing</a></li><li><a href="services.html">Web Design</a></li><li><a href="services.html">Networking</a></li></ul></div>
-    <div class="footer-col"><h4>Legal</h4><ul><li><a href="privacy-policy.html">Privacy Policy</a></li><li><a href="terms.html">Terms & Conditions</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms & Conditions</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
   </div>
   <div class="footer-bottom">
     <div class="footer-copy">© 2024 Trare Technologies · Lusaka, Zambia · PACRA Registered</div>
-    <div class="footer-legal"><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms & Conditions</a></div>
+    <div class="footer-legal"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms & Conditions</a></div>
   </div>
 </footer>
-<script>
-(function(){const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');let W,H,nodes=[];function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}resize();window.addEventListener('resize',resize);const COLORS=['#00ff88','#00d4ff','#00ff88','#00cc6a'];class Node{constructor(){this.init();this.y=Math.random()*H}init(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.55;this.vy=(Math.random()-.5)*.55;this.r=Math.random()*2+1;this.isThreat=Math.random()<.05;this.color=this.isThreat?'#ff2d55':COLORS[Math.floor(Math.random()*COLORS.length)];this.alpha=Math.random()*.35+.15;this.pulse=Math.random()*Math.PI*2;this.ps=.018+Math.random()*.018}update(){this.x+=this.vx;this.y+=this.vy;this.pulse+=this.ps;if(this.x<-60)this.x=W+60;if(this.x>W+60)this.x=-60;if(this.y<-60)this.y=H+60;if(this.y>H+60)this.y=-60}draw(){const a=this.alpha*(0.65+0.35*Math.sin(this.pulse));ctx.save();ctx.globalAlpha=a;ctx.strokeStyle=this.color;ctx.lineWidth=.5;ctx.beginPath();ctx.arc(this.x,this.y,this.r*2.8,0,Math.PI*2);ctx.stroke();ctx.fillStyle=this.color;ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fill();ctx.restore()}}for(let i=0;i<40;i++)nodes.push(new Node());function loop(){ctx.clearRect(0,0,W,H);for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<150){ctx.save();ctx.globalAlpha=(1-d/150)*.12;ctx.strokeStyle='#00d4ff';ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.stroke();ctx.restore()}}nodes.forEach(n=>{n.update();n.draw()});requestAnimationFrame(loop)}loop()})();
-</script>
+<script src="assets/js/site.js" defer></script>
 </body>
 </html>
+

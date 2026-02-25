@@ -55,22 +55,30 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 @keyframes scan-anim{0%{width:0%}100%{width:87%}}
 /* SOC STRIP */
 .soc-strip{position:relative;z-index:1;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden}
-.soc-inner{display:flex}
-.threat-map-panel{flex:0 0 420px;border-right:1px solid var(--border);padding:1.5rem}
+.soc-inner{display:flex;align-items:stretch;height:290px}
+.threat-map-panel{flex:0 0 420px;border-right:1px solid var(--border);padding:1.5rem;background:linear-gradient(180deg,rgba(3,10,15,.95) 0%,rgba(7,19,24,.82) 100%)}
 .panel-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;color:var(--green);text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
 .panel-label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse-ring 2s infinite}
-.metrics-panel{flex:1;padding:1.5rem 2rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
-.metric-cell{background:var(--surface);padding:1.2rem 1rem;position:relative;overflow:hidden}
+.metrics-panel{flex:1;padding:1rem;display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:1px;background:var(--border)}
+.metric-cell{background:linear-gradient(180deg,rgba(3,10,15,.95) 0%,rgba(7,19,24,.82) 100%);padding:1.2rem 1rem;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:.7rem}
 .metric-val{font-family:var(--display);font-size:2rem;font-weight:700;line-height:1;transition:color .5s}
 .metric-val.green{color:var(--green)}.metric-val.cyan{color:var(--cyan)}.metric-val.red{color:var(--red)}.metric-val.orange{color:var(--orange)}
 .metric-key{font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;color:var(--text-dim);text-transform:uppercase;margin-top:.3rem}
 .metric-spark{position:absolute;bottom:0;left:0;right:0;height:3px}
 .spark-green{background:linear-gradient(90deg,transparent,var(--green))}.spark-cyan{background:linear-gradient(90deg,transparent,var(--cyan))}.spark-orange{background:linear-gradient(90deg,transparent,var(--orange))}
-.alert-ticker{flex:0 0 220px;border-left:1px solid var(--border);padding:1.5rem 1.2rem;overflow:hidden}
-.ticker-stream{animation:ticker-scroll 20s linear infinite}
+.alert-ticker{flex:0 0 220px;border-left:1px solid var(--border);padding:1rem 1rem 1.2rem;overflow:hidden;background:linear-gradient(180deg,rgba(3,10,15,.95) 0%,rgba(7,19,24,.82) 100%);display:flex;flex-direction:column}
+.ticker-stream{flex:1;animation:ticker-scroll 20s linear infinite;overflow:hidden}
 @keyframes ticker-scroll{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
 .ticker-item{display:flex;flex-direction:column;gap:.2rem;padding:.5rem 0;border-bottom:1px solid rgba(15,45,58,.5)}
 .ticker-time{font-family:var(--mono);font-size:.58rem;color:var(--text-dim)}.ticker-msg{font-family:var(--mono);font-size:.65rem}
+#threat-canvas{display:block;width:100%;height:210px;max-width:100%;border:1px solid rgba(0,212,255,.14);background:linear-gradient(180deg,rgba(2,10,16,.65) 0%,rgba(3,14,22,.4) 100%)}
+.map-legend{margin-top:.6rem;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.35rem .6rem}
+.legend-item{font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;color:var(--text-dim);text-transform:uppercase;display:flex;align-items:center;gap:.35rem;white-space:nowrap}
+.legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;box-shadow:0 0 10px currentColor}
+.legend-core{background:#00ff88;color:#00ff88}
+.legend-guard{background:#00d4ff;color:#00d4ff}
+.legend-service{background:#00cc6a;color:#00cc6a}
+.legend-threat{background:#ff2d55;color:#ff2d55}
 /* STATS BAND */
 .stats-band{position:relative;z-index:1;border-bottom:1px solid var(--border);background:rgba(3,10,15,.7);display:flex;justify-content:center}
 .stat{flex:1;max-width:240px;padding:2rem 2.5rem;text-align:center;border-right:1px solid var(--border)}.stat:last-child{border-right:none}
@@ -157,15 +165,16 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
 @media(max-width:1000px){
   .hero-terminal{display:none}.about-grid{grid-template-columns:1fr;gap:2.5rem}
   nav{padding:1rem 1.5rem}.nav-links{display:none}.section-inner{padding:4rem 1.5rem}.hero{padding:7rem 1.5rem 3rem}
-  footer{padding:2rem 1.5rem}.soc-inner{flex-direction:column}.threat-map-panel{flex:unset;border-right:none;border-bottom:1px solid var(--border)}.metrics-panel{grid-template-columns:repeat(2,1fr)}.alert-ticker{border-left:none;border-top:1px solid var(--border);flex:unset}.brochure-inner{flex-direction:column;padding:3rem 1.5rem}.brochure-preview{flex:unset;width:180px}.brochure-includes{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}
+  footer{padding:2rem 1.5rem}.soc-inner{flex-direction:column;height:auto}.threat-map-panel{flex:unset;border-right:none;border-bottom:1px solid var(--border)}.map-legend{grid-template-columns:repeat(2,minmax(0,1fr))}.metrics-panel{grid-template-columns:repeat(2,1fr)}.metric-cell{min-height:115px}.alert-ticker{border-left:none;border-top:1px solid var(--border);flex:unset;max-height:250px}.brochure-inner{flex-direction:column;padding:3rem 1.5rem}.brochure-preview{flex:unset;width:180px}.brochure-includes{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:600px){.stats-band{flex-wrap:wrap}.stat{min-width:50%;border-bottom:1px solid var(--border)}.metrics-panel{grid-template-columns:1fr 1fr}.footer-grid{grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="assets/css/shared.css"/>
 </head>
 <body>
-<canvas id="node-canvas"></canvas>
+<canvas id="node-canvas" data-nodes="60" data-threat-rate="0.07" data-link-distance="180" data-link-alpha="0.22" data-link-color="#00ff88" data-link-threat-color="#ff2d55"></canvas>
 <nav>
-  <a class="nav-logo" href="index.html">TRARE<span>.</span>TECH</a>
+  <a class="nav-logo" href="index.html"><img class="site-logo site-logo-nav" src="assets/img/logo.jpeg" alt="Trare Technologies logo"/><span class="sr-only">Trare Technologies</span></a>
   <ul class="nav-links">
     <li><a href="index.html" class="active">Home</a></li>
     <li><a href="services.html">Services</a></li>
@@ -215,6 +224,12 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
     <div class="threat-map-panel">
       <div class="panel-label">Live Network Threat Map</div>
       <canvas id="threat-canvas" width="370" height="200"></canvas>
+      <div class="map-legend">
+        <span class="legend-item"><span class="legend-dot legend-core"></span>Core</span>
+        <span class="legend-item"><span class="legend-dot legend-guard"></span>Security</span>
+        <span class="legend-item"><span class="legend-dot legend-service"></span>Services</span>
+        <span class="legend-item"><span class="legend-dot legend-threat"></span>Threat</span>
+      </div>
     </div>
     <div class="metrics-panel">
       <div class="metric-cell"><div class="metric-val green" id="m1">247</div><div class="metric-key">Threats Blocked</div><div class="metric-spark spark-green"></div></div>
@@ -325,7 +340,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
 <footer>
   <div class="footer-grid">
     <div class="footer-brand-col">
-      <div class="footer-logo">TRARE<span>.</span>TECHNOLOGIES</div>
+      <div class="footer-logo"><img class="site-logo site-logo-footer" src="assets/img/logo.jpeg" alt="Trare Technologies logo"/><span class="sr-only">Trare Technologies</span></div>
       <div class="footer-slogan">// Quest for Zero Defeat</div>
       <p>Zambia's premier IT and Cybersecurity company, delivering digital defense and software solutions since 2019.</p>
     </div>
@@ -362,58 +377,14 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
   <div class="footer-bottom">
     <div class="footer-copy">© 2024 Trare Technologies · Lusaka, Zambia · PACRA Registered</div>
     <div class="footer-legal">
-      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms & Conditions</a>
     </div>
   </div>
 </footer>
 
-<script>
-// NODE NETWORK
-(function(){
-  const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');
-  let W,H,nodes=[];
-  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
-  resize();window.addEventListener('resize',resize);
-  const COLORS=['#00ff88','#00d4ff','#00ff88','#00cc6a','#00d4ff'];
-  class Node{
-    constructor(){this.init();this.y=Math.random()*H}
-    init(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.55;this.vy=(Math.random()-.5)*.55;this.r=Math.random()*2+1;this.isThreat=Math.random()<.07;this.color=this.isThreat?'#ff2d55':COLORS[Math.floor(Math.random()*COLORS.length)];this.alpha=Math.random()*.45+.2;this.pulse=Math.random()*Math.PI*2;this.ps=.018+Math.random()*.018}
-    update(){this.x+=this.vx;this.y+=this.vy;this.pulse+=this.ps;if(this.x<-60)this.x=W+60;if(this.x>W+60)this.x=-60;if(this.y<-60)this.y=H+60;if(this.y>H+60)this.y=-60}
-    draw(){const a=this.alpha*(0.65+0.35*Math.sin(this.pulse));ctx.save();ctx.globalAlpha=a;ctx.strokeStyle=this.color;ctx.lineWidth=.5;ctx.beginPath();ctx.arc(this.x,this.y,this.r*2.8,0,Math.PI*2);ctx.stroke();ctx.fillStyle=this.color;ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fill();const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.r*6);g.addColorStop(0,this.color+'2a');g.addColorStop(1,'transparent');ctx.beginPath();ctx.arc(this.x,this.y,this.r*6,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.restore()}
-  }
-  for(let i=0;i<60;i++)nodes.push(new Node());
-  function loop(){ctx.clearRect(0,0,W,H);for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<180){ctx.save();ctx.globalAlpha=(1-d/180)*.22;ctx.strokeStyle=(nodes[i].isThreat||nodes[j].isThreat)?'#ff2d55':'#00ff88';ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.stroke();ctx.restore()}}nodes.forEach(n=>{n.update();n.draw()});requestAnimationFrame(loop)}
-  loop();
-})();
-// THREAT MAP
-(function(){
-  const canvas=document.getElementById('threat-canvas');if(!canvas)return;
-  const ctx=canvas.getContext('2d'),W=canvas.width,H=canvas.height;
-  const nodes=[{x:185,y:100,label:'CORE',type:'core'},{x:58,y:38,label:'FW',type:'fw'},{x:312,y:38,label:'DMZ',type:'dmz'},{x:58,y:162,label:'LAN',type:'lan'},{x:312,y:162,label:'WEB',type:'web'},{x:185,y:22,label:'IDS',type:'ids'},{x:108,y:100,label:'VPN',type:'vpn'},{x:262,y:100,label:'DB',type:'db'},{x:22,y:100,label:'EXT',type:'threat'},{x:348,y:100,label:'EXT',type:'threat'},{x:185,y:178,label:'EDR',type:'ids'}];
-  const edges=[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[0,10],[1,8],[2,9],[6,1],[7,2]];
-  const packets=[];
-  function spawn(){const e=edges[Math.floor(Math.random()*edges.length)],t=Math.random()<.2;packets.push({from:e[0],to:e[1],t:0,speed:.009+Math.random()*.012,color:t?'#ff2d55':(Math.random()<.5?'#00ff88':'#00d4ff'),blocked:t&&Math.random()<.65})}
-  setInterval(spawn,500);
-  let frame=0;
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    ctx.save();ctx.strokeStyle='rgba(15,45,58,.7)';ctx.lineWidth=1;for(let x=0;x<W;x+=30){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}for(let y=0;y<H;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}ctx.restore();
-    edges.forEach(([a,b])=>{const na=nodes[a],nb=nodes[b];ctx.save();ctx.strokeStyle='rgba(0,255,136,.1)';ctx.lineWidth=1;ctx.setLineDash([4,8]);ctx.beginPath();ctx.moveTo(na.x,na.y);ctx.lineTo(nb.x,nb.y);ctx.stroke();ctx.restore()});
-    for(let i=packets.length-1;i>=0;i--){const p=packets[i];p.t+=p.speed;if(p.t>=1){packets.splice(i,1);continue}const na=nodes[p.from],nb=nodes[p.to],st=p.blocked?.55:1,t2=Math.min(p.t,st),x=na.x+(nb.x-na.x)*t2,y=na.y+(nb.y-na.y)*t2;if(p.blocked&&p.t>=.55){ctx.save();ctx.strokeStyle='#ff2d55';ctx.lineWidth=1.5;const s=4;ctx.beginPath();ctx.moveTo(x-s,y-s);ctx.lineTo(x+s,y+s);ctx.stroke();ctx.beginPath();ctx.moveTo(x+s,y-s);ctx.lineTo(x-s,y+s);ctx.stroke();ctx.restore();continue}ctx.save();ctx.globalAlpha=1-p.t*.3;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fill();const pt=Math.max(0,t2-.1),tx=na.x+(nb.x-na.x)*pt,ty=na.y+(nb.y-na.y)*pt,g=ctx.createLinearGradient(tx,ty,x,y);g.addColorStop(0,'transparent');g.addColorStop(1,p.color+'99');ctx.strokeStyle=g;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(x,y);ctx.stroke();ctx.restore()}
-    nodes.forEach(n=>{const ic=n.type==='core',it=n.type==='threat',col=it?'#ff2d55':(n.type==='fw'||n.type==='ids')?'#00d4ff':'#00ff88',r=ic?10:6;if(ic){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=1;ctx.globalAlpha=.18+.12*Math.sin(frame*.04);ctx.beginPath();ctx.arc(n.x,n.y,r+10+4*Math.sin(frame*.04),0,Math.PI*2);ctx.stroke();ctx.restore()}ctx.save();const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r*2.5);g.addColorStop(0,col+'44');g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.beginPath();ctx.arc(n.x,n.y,r*2.5,0,Math.PI*2);ctx.fill();ctx.fillStyle=col+'22';ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#c8dde6';ctx.font=`${ic?'700':'400'} 7px Share Tech Mono`;ctx.textAlign='center';ctx.fillText(n.label,n.x,n.y+r+9);ctx.restore()});
-    frame++;requestAnimationFrame(draw)
-  }
-  draw();
-})();
-// LIVE METRICS
-let threats=247;
-setInterval(()=>{if(Math.random()<.3){threats++;const el=document.getElementById('m1');if(el){el.textContent=threats;el.style.color='#fff';setTimeout(()=>{el.style.color='var(--green)'},300)}const tc=document.getElementById('threat-count');if(tc)tc.textContent=threats}document.getElementById('m3')&&(document.getElementById('m3').textContent=Math.floor(Math.random()*5+1))},2800);
-// TICKER
-(function(){const alerts=[{time:'14:32:01',msg:'Port scan blocked · 41.x.x.x',col:'#ff2d55'},{time:'14:31:48',msg:'SSL handshake OK · client_42',col:'#00ff88'},{time:'14:31:22',msg:'Brute force attempt · LAN',col:'#ff9500'},{time:'14:30:59',msg:'VPN tunnel established',col:'#00d4ff'},{time:'14:30:31',msg:'Malware signature detected',col:'#ff2d55'},{time:'14:29:44',msg:'Patch applied · CVE-2024-xx',col:'#00ff88'},{time:'14:28:17',msg:'SQL injection blocked',col:'#ff2d55'},{time:'14:27:50',msg:'Backup completed · 4.2GB',col:'#00ff88'},{time:'14:27:03',msg:'Anomaly detected · DB svr',col:'#ff9500'},{time:'14:26:41',msg:'Firewall rule updated',col:'#00d4ff'}];const el=document.getElementById('ticker-stream');let html='';[...alerts,...alerts].forEach(a=>{html+=`<div class="ticker-item"><span class="ticker-time">${a.time}</span><span class="ticker-msg" style="color:${a.col}">${a.msg}</span></div>`});el.innerHTML=html})();
-// SCROLL FADE
-const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');io.unobserve(x.target)}}),{threshold:.12});
-document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
-</script>
+<script src="assets/js/site.js" defer></script>
+<script src="assets/js/index-home.js" defer></script>
 </body>
 </html>
+

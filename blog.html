@@ -79,11 +79,12 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
 @media(max-width:1000px){nav{padding:1rem 1.5rem}.nav-links{display:none}.section-inner{padding:4rem 1.5rem}.page-hero{padding:8rem 1.5rem 3rem}.blog-layout{grid-template-columns:1fr 1fr}.blog-card.featured{grid-column:span 2}.footer-grid{grid-template-columns:1fr 1fr}footer{padding:2rem 1.5rem}.nl-inner{padding:3rem 1.5rem}}
 @media(max-width:600px){.blog-layout{grid-template-columns:1fr}.blog-card.featured{grid-column:span 1;grid-row:span 1}.nl-form{flex-direction:column}.footer-grid{grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="assets/css/shared.css"/>
 </head>
 <body>
-<canvas id="node-canvas"></canvas>
+<canvas id="node-canvas" data-nodes="55" data-threat-rate="0.07" data-link-distance="180" data-link-alpha="0.22" data-link-color="#00ff88" data-link-threat-color="#ff2d55"></canvas>
 <nav>
-  <a class="nav-logo" href="index.html">TRARE<span>.</span>TECH</a>
+  <a class="nav-logo" href="index.html"><img class="site-logo site-logo-nav" src="assets/img/logo.jpeg" alt="Trare Technologies logo"/><span class="sr-only">Trare Technologies</span></a>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="services.html">Services</a></li>
@@ -107,17 +108,17 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
   <div class="section-inner">
     <!-- FILTERS -->
     <div class="blog-filters fade-up">
-      <button class="filter-btn active">All Posts</button>
-      <button class="filter-btn">Cybersecurity</button>
-      <button class="filter-btn">Tech Tips</button>
-      <button class="filter-btn">Company News</button>
-      <button class="filter-btn">Tutorials</button>
+      <button class="filter-btn active" type="button" data-filter="all">All Posts</button>
+      <button class="filter-btn" type="button" data-filter="cybersecurity">Cybersecurity</button>
+      <button class="filter-btn" type="button" data-filter="tech-tips">Tech Tips</button>
+      <button class="filter-btn" type="button" data-filter="company-news">Company News</button>
+      <button class="filter-btn" type="button" data-filter="tutorials">Tutorials</button>
     </div>
 
     <!-- BLOG GRID -->
     <div class="blog-layout fade-up">
       <!-- Featured -->
-      <div class="blog-card featured">
+      <div class="blog-card featured" data-category="cybersecurity">
         <div class="blog-thumb" style="font-size:5rem">🛡️</div>
         <div class="blog-body">
           <div class="blog-meta">
@@ -134,7 +135,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
       </div>
 
       <!-- Post 2 -->
-      <div class="blog-card">
+      <div class="blog-card" data-category="cybersecurity">
         <div class="blog-thumb">🔍</div>
         <div class="blog-body">
           <div class="blog-meta"><span class="blog-cat security">Cybersecurity</span><span class="blog-date">08 Jan 2024</span></div>
@@ -145,7 +146,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
       </div>
 
       <!-- Post 3 -->
-      <div class="blog-card">
+      <div class="blog-card" data-category="tech-tips">
         <div class="blog-thumb">🌐</div>
         <div class="blog-body">
           <div class="blog-meta"><span class="blog-cat tech">Tech Tips</span><span class="blog-date">02 Jan 2024</span></div>
@@ -156,7 +157,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
       </div>
 
       <!-- Post 4 -->
-      <div class="blog-card">
+      <div class="blog-card" data-category="tech-tips">
         <div class="blog-thumb">📡</div>
         <div class="blog-body">
           <div class="blog-meta"><span class="blog-cat tech">Tech Tips</span><span class="blog-date">22 Dec 2023</span></div>
@@ -167,7 +168,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
       </div>
 
       <!-- Post 5 -->
-      <div class="blog-card">
+      <div class="blog-card" data-category="tech-tips">
         <div class="blog-thumb">💻</div>
         <div class="blog-body">
           <div class="blog-meta"><span class="blog-cat tech">Tech Tips</span><span class="blog-date">14 Dec 2023</span></div>
@@ -178,7 +179,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
       </div>
 
       <!-- Post 6 -->
-      <div class="blog-card">
+      <div class="blog-card" data-category="company-news">
         <div class="blog-thumb">🏢</div>
         <div class="blog-body">
           <div class="blog-meta"><span class="blog-cat company">Company News</span><span class="blog-date">01 Dec 2023</span></div>
@@ -188,6 +189,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
         </div>
       </div>
     </div>
+    <p class="blog-empty" id="blog-empty" hidden>No posts found in this category yet.</p>
   </div>
 </section>
 
@@ -196,30 +198,28 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);background
   <div class="nl-inner">
     <h2>Stay Ahead of <span>Cyber Threats</span></h2>
     <p>Subscribe to the Trare Intelligence Brief — monthly cybersecurity insights, threat alerts, and practical tips delivered to your inbox.</p>
-    <div class="nl-form">
-      <input class="nl-input" type="email" placeholder="Enter your email address..."/>
-      <button class="nl-btn">Subscribe →</button>
-    </div>
+    <form class="nl-form" id="newsletter-form" data-storage-key="trare_newsletter_subscribers">
+      <label class="sr-only" for="newsletter-email">Email address</label>
+      <input class="nl-input" id="newsletter-email" name="email" type="email" placeholder="Enter your email address..." autocomplete="email" required/>
+      <button class="nl-btn" type="submit">Subscribe →</button>
+    </form>
+    <p class="nl-status" id="newsletter-status" aria-live="polite"></p>
   </div>
 </div>
 
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand-col"><div class="footer-logo">TRARE<span>.</span>TECHNOLOGIES</div><div class="footer-slogan">// Quest for Zero Defeat</div><p>Zambia's premier IT and Cybersecurity company, delivering digital defense and software solutions since 2019.</p></div>
+    <div class="footer-brand-col"><div class="footer-logo"><img class="site-logo site-logo-footer" src="assets/img/logo.jpeg" alt="Trare Technologies logo"/><span class="sr-only">Trare Technologies</span></div><div class="footer-slogan">// Quest for Zero Defeat</div><p>Zambia's premier IT and Cybersecurity company, delivering digital defense and software solutions since 2019.</p></div>
     <div class="footer-col"><h4>Pages</h4><ul><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
     <div class="footer-col"><h4>Services</h4><ul><li><a href="services.html">Cybersecurity</a></li><li><a href="services.html">Pen Testing</a></li><li><a href="services.html">Web Design</a></li><li><a href="services.html">Networking</a></li><li><a href="services.html">Software</a></li></ul></div>
     <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+2600776514220">+260 0776 514 220</a></li><li><a href="contact.html">Send Message</a></li></ul></div>
   </div>
   <div class="footer-bottom">
     <div class="footer-copy">© 2024 Trare Technologies · Lusaka, Zambia · PACRA Registered</div>
-    <div class="footer-legal"><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms & Conditions</a></div>
+    <div class="footer-legal"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms & Conditions</a></div>
   </div>
 </footer>
-<script>
-document.querySelectorAll('.filter-btn').forEach(btn=>{btn.addEventListener('click',function(){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')})});
-(function(){const canvas=document.getElementById('node-canvas'),ctx=canvas.getContext('2d');let W,H,nodes=[];function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}resize();window.addEventListener('resize',resize);const COLORS=['#00ff88','#00d4ff','#00ff88','#00cc6a'];class Node{constructor(){this.init();this.y=Math.random()*H}init(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.55;this.vy=(Math.random()-.5)*.55;this.r=Math.random()*2+1;this.isThreat=Math.random()<.07;this.color=this.isThreat?'#ff2d55':COLORS[Math.floor(Math.random()*COLORS.length)];this.alpha=Math.random()*.45+.2;this.pulse=Math.random()*Math.PI*2;this.ps=.018+Math.random()*.018}update(){this.x+=this.vx;this.y+=this.vy;this.pulse+=this.ps;if(this.x<-60)this.x=W+60;if(this.x>W+60)this.x=-60;if(this.y<-60)this.y=H+60;if(this.y>H+60)this.y=-60}draw(){const a=this.alpha*(0.65+0.35*Math.sin(this.pulse));ctx.save();ctx.globalAlpha=a;ctx.strokeStyle=this.color;ctx.lineWidth=.5;ctx.beginPath();ctx.arc(this.x,this.y,this.r*2.8,0,Math.PI*2);ctx.stroke();ctx.fillStyle=this.color;ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fill();const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.r*6);g.addColorStop(0,this.color+'2a');g.addColorStop(1,'transparent');ctx.beginPath();ctx.arc(this.x,this.y,this.r*6,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.restore()}}for(let i=0;i<55;i++)nodes.push(new Node());function loop(){ctx.clearRect(0,0,W,H);for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<180){ctx.save();ctx.globalAlpha=(1-d/180)*.22;ctx.strokeStyle=(nodes[i].isThreat||nodes[j].isThreat)?'#ff2d55':'#00ff88';ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.stroke();ctx.restore()}}nodes.forEach(n=>{n.update();n.draw()});requestAnimationFrame(loop)}loop()})();
-const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');io.unobserve(x.target)}}),{threshold:.1});
-document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
-</script>
+<script src="assets/js/site.js" defer></script>
 </body>
 </html>
+
